@@ -288,10 +288,10 @@ export default function App() {
         <div className="mx-auto max-w-6xl px-5">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="font-display text-[clamp(24px,3vw,32px)] font-bold tracking-tight text-ink text-balance">
-              See the full platform on your own content
+              See a mini preview of the Skillwell platform
             </h2>
-            <p className="mx-auto mt-3 max-w-[42ch] text-ink-soft">
-              Bring one course you already run. We will show you what adaptive training does to it, live.
+            <p className="mx-auto mt-3 max-w-[46ch] text-ink-soft">
+              Verify competency, close skill gaps, and deploy immersive and adaptive training to your workforce today.
             </p>
           </div>
           <div className="mt-8">
