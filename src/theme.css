@@ -1,0 +1,123 @@
+/* =====================================================================
+   SKILLWELL THEME — THE SINGLE SOURCE OF DESIGN TRUTH
+   ---------------------------------------------------------------------
+   Every color, font, radius, and shadow comes from here. Components
+   reference these tokens via Tailwind utilities (bg-surface, text-ink,
+   rounded-btn, bg-primary, ...) or var(--token) in CSS. Never hardcode
+   a hex value in a component.
+
+   Import this file once (e.g. in main.tsx). Requires Tailwind v4 and
+   @fontsource-variable/dm-sans installed.
+   ===================================================================== */
+
+@import "tailwindcss";
+@import "@fontsource-variable/dm-sans";
+
+@theme {
+  /* ---- Typography (DM Sans) --------------------------------------- */
+  --font-sans: "DM Sans Variable", "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "DM Sans Variable", "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* ---- Brand palette tokens --------------------------------------- */
+  --color-sand: #efe8d7;           /* Base                       */
+  --color-oasis: #00bf80;          /* Oasis green                */
+  --color-ocean: #004853;          /* Ocean deep green           */
+  --color-lime: #a8e101;           /* Lime                       */
+  --color-sky: #0dc9fe;            /* Sky blue                   */
+  --color-accent-orange: #f0781f;  /* ETU heritage accent        */
+
+  /* ---- Neutral ramp (cool-tinted) --------------------------------- */
+  --color-neutral-50: #f6f7f8;
+  --color-neutral-100: #eef0f1;
+  --color-neutral-200: #e1e5e6;
+  --color-neutral-300: #c9cfd1;
+  --color-neutral-400: #9aa4a8;
+  --color-neutral-500: #6c777b;
+  --color-neutral-600: #4b565a;
+  --color-neutral-700: #33403f;
+  --color-neutral-900: #16211f;
+
+  /* ---- Surfaces --------------------------------------------------- */
+  --color-surface: #f6f7f8;        /* page background            */
+  --color-panel: #ffffff;          /* raised cards / overlays    */
+  --color-sunken: #eef0f1;         /* insets, track backgrounds  */
+  --color-navy: #004853;           /* deep feature panels = Ocean */
+  --color-navy-deep: #00333c;
+
+  /* ---- Lines / borders -------------------------------------------- */
+  --color-line: #e1e5e6;
+  --color-line-strong: #c9cfd1;
+
+  /* ---- Text (ink) ------------------------------------------------- */
+  --color-ink: #16211f;            /* primary text               */
+  --color-ink-soft: #4b565a;       /* secondary text             */
+  --color-ink-muted: #808b8f;      /* tertiary / captions        */
+  --color-ink-inverse: #ffffff;    /* text on dark/primary fills */
+
+  /* ---- Primary = Platform Blue (product main accent) -------------- */
+  --color-primary: #005e8d;
+  --color-primary-hover: #004a70;
+  --color-primary-soft: #e6f0f6;
+
+  /* ---- Semantic / status colours ---------------------------------- */
+  --color-success: #23a566;
+  --color-success-soft: #dcf1e6;
+  --color-warning: #e2a13c;
+  --color-warning-soft: #fbeecf;
+  --color-danger: #d43c3c;
+  --color-info: #005e8d;
+  --color-info-soft: #d9edfb;
+
+  /* ---- Learning-map node states ----------------------------------- */
+  --color-node-locked: #b7c0c1;
+  --color-node-available: #005e8d;
+  --color-node-current: #005e8d;
+  --color-node-complete: #23a566;  /* Passed/Completed green      */
+  --color-node-verified: #00bf80;  /* Oasis: tested-out skills    */
+  --color-edge: #ced5d7;           /* faded edges → locked nodes  */
+  --color-edge-strong: #33403f;    /* dark arrows (active path)   */
+
+  /* Suggested-next-step popover card = Platform Blue                 */
+  --color-suggest: #005e8d;
+  --color-suggest-deep: #004a70;
+
+  /* ---- Chart palette ---------------------------------------------- */
+  --color-chart-1: #005e8d;
+  --color-chart-2: #00bf80;
+  --color-chart-3: #0dc9fe;
+  --color-chart-4: #a8e101;
+  --color-chart-5: #004853;
+  --color-chart-6: #e0930f;
+
+  /* ---- Radii (buttons 6px, cards 8–16px) -------------------------- */
+  --radius-btn: 6px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* ---- Elevation -------------------------------------------------- */
+  --shadow-card: 0 1px 2px rgba(16, 41, 46, 0.05), 0 4px 12px rgba(16, 41, 46, 0.07);
+  --shadow-overlay: 0 12px 40px rgba(16, 41, 46, 0.2);
+}
+
+:root { color-scheme: light; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

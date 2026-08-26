@@ -1,0 +1,119 @@
+/* Hero product reel — four looping scenes. The three software screens (map,
+   upload, report) render inside a tilted, floating browser window (a "3D
+   product render" look). The simulation GIF, which already shows a laptop in
+   an office, is shown grounded on a desk instead of in a browser. */
+
+.player { position:relative; display:block; width:100%; max-width:720px; aspect-ratio:16/9; margin:0 auto; border-radius:var(--radius-xl); overflow:hidden; box-shadow:var(--shadow-overlay), 0 0 0 1px rgba(0,72,83,.06); text-decoration:none; container-type:inline-size; background:var(--color-surface); }
+.reel { position:absolute; inset:0; font-size:clamp(9px,2.35cqw,17px); color:var(--color-ink); }
+.scene { position:absolute; inset:0; opacity:0; z-index:1; transform:scale(1.014); transition:opacity .18s ease, transform .6s cubic-bezier(.2,.7,.2,1); overflow:hidden; }
+.scene.is-active { opacity:1; z-index:2; transition:opacity .28s ease, transform .6s cubic-bezier(.2,.7,.2,1); transform:scale(1); }
+
+.reel-chrome { position:absolute; z-index:6; left:0.9em; bottom:0.9em; display:flex; align-items:center; gap:0.7em; }
+.reel-tag { font-size:0.78em; font-weight:700; color:#fff; background:rgba(0,51,60,.62); padding:0.42em 0.85em; border-radius:999px; backdrop-filter:blur(6px); white-space:nowrap; box-shadow:inset 0 0 0 1px rgba(255,255,255,.14); }
+.reel-bars { display:flex; gap:0.32em; width:8.5em; }
+.reel-bars > span { position:relative; flex:1; height:0.26em; border-radius:1em; background:rgba(0,51,60,.18); overflow:hidden; }
+.reel-bars i { position:absolute; inset:0 auto 0 0; width:0; background:var(--color-oasis); border-radius:1em; }
+.reel-cta { position:absolute; z-index:6; right:0.9em; bottom:0.9em; font-size:0.78em; font-weight:700; color:#fff; background:rgba(0,94,141,.92); padding:0.42em 0.9em; border-radius:999px; opacity:0; transform:translateY(0.35em); transition:opacity .2s, transform .2s; box-shadow:0 0.4em 1em rgba(0,72,83,.35); }
+.player:hover .reel-cta { opacity:1; transform:none; }
+
+/* ---- shared: software screens rendered in a floating browser window ---- */
+.sc-map, .sc-upload, .sc-report { display:grid; place-items:center; perspective:1200px;
+  background:linear-gradient(155deg, #eef4f7 0%, #d9e7ee 60%, #c6d7df 100%); }
+.win-stage { position:relative; z-index:1; width:76%; transform-style:preserve-3d; animation:simFloat 7s ease-in-out infinite; }
+.win { border-radius:0.7em; overflow:hidden; background:#fff; transform:rotateY(-12deg) rotateX(6deg);
+  box-shadow:0 1.8em 3.4em rgba(16,41,46,.30), 0 0 0 1px rgba(16,41,46,.06); }
+.win-bar { display:flex; align-items:center; gap:0.4em; height:1.7em; padding:0 0.7em; background:#eef1f3; border-bottom:1px solid rgba(16,41,46,.07); }
+.win-bar i { width:0.42em; height:0.42em; border-radius:50%; }
+.win-bar i:nth-child(1){ background:#ff5f57; } .win-bar i:nth-child(2){ background:#febc2e; } .win-bar i:nth-child(3){ background:#28c840; }
+.win-bar .url { margin-left:0.5em; font-size:0.46em; font-weight:600; color:#8a94a6; background:#fff; border-radius:0.4em; padding:0.2em 0.7em; }
+.win-body { position:relative; aspect-ratio:16/9; overflow:hidden; background:#fff; }
+
+/* Scene 1: learning map (real component) inside the window */
+.map-holder { position:absolute; inset:0; pointer-events:none; }
+.map-holder > * { height:100%; width:100%; }
+
+/* Scene 2: drop in your content */
+.win-body.up-screen { background:var(--color-surface); display:grid; place-items:center; }
+.up-card { width:82%; background:#fff; border-radius:0.8em; box-shadow:0 0.8em 2em rgba(16,41,46,.14); padding:1.1em 1.2em; text-align:center; }
+.up-eyebrow { font-size:0.55em; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:var(--color-primary); }
+.up-title { display:block; font-family:var(--font-display); font-size:1.15em; font-weight:700; color:var(--color-ink); margin:0.4em 0 0.8em; letter-spacing:-0.01em; }
+.up-zone { position:relative; border:0.14em dashed var(--color-line-strong); border-radius:0.6em; padding:1.2em 1em; display:flex; flex-direction:column; align-items:center; gap:0.45em; background:#fafbfc; }
+.up-zicon { width:2.2em; height:2.2em; border-radius:50%; background:var(--color-primary-soft); color:var(--color-primary); display:grid; place-items:center; }
+.up-zicon svg { width:1.1em; height:1.1em; }
+.up-ztext { font-size:0.72em; font-weight:700; color:var(--color-ink); }
+.up-ztext.done { position:absolute; opacity:0; color:var(--color-success); }
+.filecard { position:absolute; top:6%; right:10%; z-index:3; width:3em; filter:drop-shadow(0 0.6em 1em rgba(0,0,0,.28)); }
+.filecard .sheet { position:relative; aspect-ratio:3/4; background:#fff; border:1px solid var(--color-line); border-radius:0.3em; overflow:hidden; }
+.filecard .sheet::before { content:""; position:absolute; top:0; right:0; border-width:0 0.8em 0.8em 0; border-style:solid; border-color:transparent var(--color-sunken) transparent transparent; }
+.filecard .lines { position:absolute; left:0.35em; right:0.35em; top:1em; display:flex; flex-direction:column; gap:0.24em; }
+.filecard .lines span { height:0.15em; border-radius:1em; background:var(--color-line-strong); }
+.filecard .lines span:nth-child(3){ width:70%; }
+.filecard .badge { position:absolute; left:0.3em; bottom:0.35em; background:var(--color-danger); color:#fff; font-size:0.4em; font-weight:800; padding:0.14em 0.4em; border-radius:0.24em; letter-spacing:.03em; }
+.filecard .fname { margin-top:0.4em; text-align:center; font-size:0.46em; font-weight:600; color:var(--color-ink-soft); white-space:nowrap; }
+
+/* Scene 3: simulation GIF, grounded on a desk (no browser) */
+.sc-sim { display:grid; place-items:center; perspective:1200px;
+  background:linear-gradient(165deg, #f4f0e8 0%, #e7ddcb 62%, #d6c8ad 100%); }
+.sim-stage { position:relative; z-index:1; width:60%; animation:simFloat 7s ease-in-out infinite; }
+.sim-frame { border-radius:0.6em; overflow:hidden; transform:rotateY(-6deg) rotateX(3deg);
+  box-shadow:0 1.6em 3em rgba(16,41,46,.32), 0 0 0 1px rgba(16,41,46,.05); }
+.sim-vid { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; }
+.sim-stage::after { content:""; position:absolute; left:5%; right:5%; bottom:-8%; height:11%; z-index:-1;
+  background:radial-gradient(ellipse at center, rgba(16,41,46,.24), transparent 70%); filter:blur(3px); }
+
+/* Scene 4: skills report — screen scrolls through the full report */
+.rep-scroll { position:absolute; inset:0 0 auto 0; padding:1em 1.15em; will-change:transform; }
+.rep-ey { font-size:0.55em; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--color-primary); }
+.rep-h { display:block; font-family:var(--font-display); font-size:1.05em; font-weight:700; color:var(--color-ink); margin:0.15em 0 0.1em; letter-spacing:-0.01em; }
+.rep-meta { font-size:0.55em; color:var(--color-ink-muted); }
+.rep-stats { display:flex; gap:0.6em; margin:0.8em 0 1em; }
+.rep-tile { flex:1; border:1px solid var(--color-line); border-radius:0.55em; padding:0.5em 0.6em; }
+.rep-tile b { display:block; font-size:1.25em; font-weight:800; color:var(--color-ink); line-height:1; }
+.rep-tile span { font-size:0.5em; color:var(--color-ink-soft); }
+.rep-donut { display:flex; align-items:center; gap:0.5em; border:1px solid var(--color-line); border-radius:0.55em; padding:0.45em 0.6em; }
+.rep-donut svg { width:2.2em; height:2.2em; flex:none; }
+.rep-donut .dl b { display:block; font-size:0.9em; font-weight:800; color:var(--color-ink); }
+.rep-donut .dl span { font-size:0.48em; color:var(--color-ink-soft); }
+.rep-block { margin-bottom:1em; }
+.rep-blocktitle { display:block; font-size:0.58em; font-weight:800; color:var(--color-ink); margin-bottom:0.5em; letter-spacing:-0.01em; }
+.rep-row { display:grid; grid-template-columns:8.5em 1fr 2.3em; align-items:center; gap:0.5em; margin-bottom:0.38em; }
+.rep-label { font-size:0.52em; font-weight:600; color:var(--color-ink); text-align:right; line-height:1.15; }
+.rep-track { height:0.5em; border-radius:0.3em; background:var(--color-sunken); overflow:hidden; }
+.rep-track i { display:block; height:100%; width:0; background:var(--color-primary); border-radius:0.3em; }
+.rep-val { font-size:0.54em; font-weight:700; color:var(--color-ink-soft); text-align:right; font-variant-numeric:tabular-nums; }
+.rep-row2 { display:grid; grid-template-columns:8.5em 1fr 2.5em; align-items:center; gap:0.5em; margin-bottom:0.46em; }
+.rep-bars { display:flex; flex-direction:column; gap:0.2em; }
+.rep-bars i { height:0.42em; border-radius:0.3em; width:0; }
+.bar-first { background:#bfe6cf; }
+.bar-last { background:var(--color-success); }
+.rep-delta { font-size:0.58em; font-weight:800; text-align:right; font-variant-numeric:tabular-nums; }
+.rep-delta.up { color:var(--color-success); } .rep-delta.flat { color:var(--color-ink-muted); } .rep-delta.down { color:var(--color-danger); }
+
+/* ---- animations ---- */
+.sc-map.is-active .win, .sc-upload.is-active .win, .sc-report.is-active .win { animation:winIn .7s cubic-bezier(.2,.7,.2,1) both; }
+.sc-sim.is-active .sim-frame { animation:simIn .7s cubic-bezier(.2,.7,.2,1) both; }
+.sc-upload.is-active .filecard { animation:fileDrop 2s cubic-bezier(.5,.05,.2,1) both .3s; }
+.sc-upload.is-active .up-zone { animation:zoneHi .45s both 1.55s; }
+.sc-upload.is-active .up-ztext.main { animation:swapOut .3s both 1.7s; }
+.sc-upload.is-active .up-ztext.done { animation:swapIn .3s both 1.85s; }
+.sc-report.is-active .rep-track i,
+.sc-report.is-active .rep-bars i { animation:grow .8s cubic-bezier(.2,.7,.2,1) both .2s; }
+
+@keyframes simFloat { 0%,100% { transform:translateY(-1.6%); } 50% { transform:translateY(1.6%); } }
+@keyframes winIn { from { opacity:0; transform:rotateY(-26deg) rotateX(6deg) scale(.9) translateX(7%); } to { opacity:1; transform:rotateY(-12deg) rotateX(6deg) scale(1) translateX(0); } }
+@keyframes simIn { from { opacity:0; transform:rotateY(-16deg) rotateX(3deg) scale(.92); } to { opacity:1; transform:rotateY(-6deg) rotateX(3deg) scale(1); } }
+@keyframes fileDrop {
+  0% { top:6%; right:10%; transform:scale(1) rotate(4deg); opacity:0; }
+  12% { opacity:1; }
+  62% { top:42%; right:calc(50% - 1.5em); transform:scale(.6) rotate(0); opacity:1; }
+  78% { top:42%; right:calc(50% - 1.5em); transform:scale(.4) rotate(0); opacity:0; }
+  100% { opacity:0; }
+}
+@keyframes zoneHi { to { border-color:var(--color-primary); background:var(--color-primary-soft); } }
+@keyframes swapOut { to { opacity:0; transform:translateY(-0.4em); } }
+@keyframes swapIn { from { opacity:0; transform:translateY(0.4em); } to { opacity:1; transform:none; } }
+@keyframes grow { from { width:0; } to { width:var(--w); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .scene, .scene * { animation:none !important; transition-duration:.001ms !important; }
+}
