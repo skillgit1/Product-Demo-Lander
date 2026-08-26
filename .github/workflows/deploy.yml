@@ -22,10 +22,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      # No committed lockfile yet, so resolve fresh. (Swap to `npm ci` once a
-      # package-lock.json is committed for reproducible installs.)
+      # Exact-pinned versions (no lockfile). --legacy-peer-deps avoids ERESOLVE
+      # on fresh installs.
       - name: Install dependencies
-        run: npm install
+        run: npm install --no-audit --no-fund --legacy-peer-deps
       # Relative base makes the build work at a project-pages subpath
       # (e.g. /Product-Demo-Lander/) without hardcoding the path.
       - name: Build
