@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import type { CSSProperties } from 'react'
 import { LearningMap } from './LearningMap'
 import { SAMPLE_MAP } from '../lib/mapData'
+import { trackStartPreview } from '../lib/posthog'
 import '../reel.css'
 
 // Real report data (matches the product's Auto-Insights report, "leadership").
@@ -101,7 +102,7 @@ export function HeroReel() {
   }, [])
 
   return (
-    <a ref={rootRef} className="player" href="#tour-form" aria-label="Start the tour, jump to the form">
+    <a ref={rootRef} className="player" href="https://www.skillwell.com/take-a-tour" onClick={() => trackStartPreview()} aria-label="Start the preview">
       <div className="reel">
         {/* Scene 1: the real learning-map component, in a browser window */}
         <div className="scene sc-map is-active">
@@ -222,7 +223,7 @@ export function HeroReel() {
           <span><i /></span><span><i /></span><span><i /></span><span><i /></span>
         </span>
       </span>
-      <span className="reel-cta">Take the tour &darr;</span>
+      <span className="reel-cta">Start the Preview &rsaquo;</span>
     </a>
   )
 }
