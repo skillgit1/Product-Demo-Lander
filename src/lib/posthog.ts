@@ -36,3 +36,10 @@ export function optInAndIdentify(data: { email: string; firstName: string; lastN
     last_name: data.lastName,
   })
 }
+
+/** Called when someone clicks "Start the Preview" (no form, so no identify). */
+export function trackStartPreview() {
+  if (!started) initPostHog()
+  posthog.opt_in_capturing()
+  posthog.capture('start_preview_clicked')
+}

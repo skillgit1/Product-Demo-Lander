@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { HeroReel } from './components/HeroReel'
-import { optInAndIdentify } from './lib/posthog'
+import { optInAndIdentify, trackStartPreview } from './lib/posthog'
 
 const TOUR_URL = 'https://www.skillwell.com/take-a-tour'
 
@@ -74,6 +74,23 @@ function Arrow() {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
       <path d="M5 12h14M13 6l6 6-6 6" />
     </svg>
+  )
+}
+
+// Simplified CTA that replaces the opt-in form for now. Fires a PostHog
+// conversion event, then sends the visitor into the tour.
+function StartPreviewButton() {
+  function onClick() {
+    trackStartPreview()
+    window.location.href = TOUR_URL
+  }
+  return (
+    <button
+      onClick={onClick}
+      className="mx-auto flex items-center justify-center gap-2 rounded-btn bg-primary px-8 py-4 text-lg font-bold text-white shadow-[0_10px_26px_rgba(0,94,141,0.35)] transition-colors hover:bg-primary-hover"
+    >
+      Start the Preview <Arrow />
+    </button>
   )
 }
 
@@ -208,7 +225,7 @@ export default function App() {
             <HeroReel />
           </div>
           <div id="tour-form" className="mt-6 scroll-mt-24">
-            <BookingCard />
+            <StartPreviewButton />
           </div>
         </div>
       </section>
@@ -295,7 +312,7 @@ export default function App() {
             </p>
           </div>
           <div className="mt-8">
-            <BookingCard />
+            <StartPreviewButton />
           </div>
         </div>
       </section>
