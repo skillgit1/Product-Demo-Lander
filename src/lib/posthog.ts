@@ -27,19 +27,34 @@ export function initPostHog() {
  * visitor in to capturing and identify them by email so their (previously
  * anonymous) activity stitches to the person.
  */
+/** Read UTM params off the landing URL so conversions are attributable by ad. */
+export function getUTMs(): Record<string, string> {
+  if (typeof window === 'undefined') return {}
+  const p = new URLSearchParams(window.location.search)
+  const out: Record<string, string> = {}
+  for (const k of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']) {
+    const v = p.get(k)
+    if (v) out[k] = v
+  }
+  return out
+}
+
 export function optInAndIdentify(data: { email: string; firstName: string; lastName: string }) {
   if (!started) initPostHog()
   posthog.opt_in_capturing()
+  const utms = getUTMs()
   posthog.identify(data.email, {
     email: data.email,
     first_name: data.firstName,
     last_name: data.lastName,
+    ...utms,
   })
+  posthog.capture('tour_form_submitted', utms)
 }
 
 /** Called when someone clicks "Start the Preview" (no form, so no identify). */
 export function trackStartPreview() {
   if (!started) initPostHog()
   posthog.opt_in_capturing()
-  posthog.capture('start_preview_clicked')
+  posthog.capture('start_preview_clicked', getUTMs())
 }
