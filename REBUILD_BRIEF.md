@@ -88,3 +88,16 @@ On submit (in order):
 - EU/UK: consent-gate the HubSpot + PostHog scripts before load.
 - Optional: `posthog.capture('tour_form_submitted')` for a countable conversion event.
 - Confirm the six named customer logos (Capgemini, Merck, Amazon, Ochsner, Microsoft) are approved for public display.
+
+## 11. Current state (latest changes)
+
+- **Opt-in form swapped for a CTA button.** Both `BookingCard`s replaced with `<StartPreviewButton>` ("Start the Preview" → fires PostHog `start_preview_clicked`, then redirects to `skillwell.com/take-a-tour`). The form + full HubSpot Forms API wiring are kept unrendered in `App.tsx` for easy re-enable (swap `<StartPreviewButton />` → `<BookingCard />` in the two spots).
+- **Reel click → tour page.** The hero reel links to `https://www.skillwell.com/take-a-tour` and fires the same `start_preview_clicked` event (was scroll-to-form). So both CTAs = one conversion event.
+- **UTM attribution.** Every conversion event carries `utm_source/medium/campaign/content/term` via `getUTMs()` in `src/lib/posthog.ts`. The 4 ad links:
+  - Google Ads 27Zero → `?utm_source=google&utm_medium=cpc&utm_campaign=27zero`
+  - Google Ads Skillwell → `?utm_source=google&utm_medium=cpc&utm_campaign=skillwell`
+  - LinkedIn Ads (paid) → `?utm_source=linkedin&utm_medium=paid_social&utm_campaign=linkedin_ads`
+  - LinkedIn Content (organic) → `?utm_source=linkedin&utm_medium=social&utm_campaign=linkedin_content`
+  In PostHog: Trends on `start_preview_clicked` broken down by `utm_campaign`.
+- **Cross-subdomain identity.** `cross_subdomain_cookie: true` added to `posthog.init` on BOTH the lander AND the apex demo (`skillwell-interactive-demo/src/lib/posthog.ts`), so the PostHog cookie is set on `.tryskillwell.com` and a person is one identity across preview + apex.
+- **PostHog posture reminder:** opt-out-by-default + `capture_pageview:false` = it records only conversions, not anonymous traffic. To also count landing views per campaign, set `capture_pageview:true` and drop opt-out (add a consent notice for EU/UK).
