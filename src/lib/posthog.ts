@@ -29,16 +29,24 @@ export function initPostHog() {
  * visitor in to capturing and identify them by email so their (previously
  * anonymous) activity stitches to the person.
  */
-/** Read UTM params off the landing URL so conversions are attributable by ad. */
-export function getUTMs(): Record<string, string> {
+// Captured ONCE at module load. This module is imported from the app entry
+// point, so this runs before the app renders and before anything could alter
+// the URL — the UTMs then survive to the (later, opt-in-gated) conversion
+// event even if the query string were changed afterward.
+const LANDING_UTMS: Record<string, string> = (() => {
   if (typeof window === 'undefined') return {}
   const p = new URLSearchParams(window.location.search)
   const out: Record<string, string> = {}
   for (const k of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']) {
     const v = p.get(k)
-    if (v) out[k] = v
+    if (v !== null) out[k] = v
   }
   return out
+})()
+
+/** UTM params captured at page load, attached to every conversion event. */
+export function getUTMs(): Record<string, string> {
+  return LANDING_UTMS
 }
 
 export function optInAndIdentify(data: { email: string; firstName: string; lastName: string }) {
