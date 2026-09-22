@@ -1,9 +1,30 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { HeroReel } from './components/HeroReel'
-import { optInAndIdentify, trackStartPreview } from './lib/posthog'
+import { optInAndIdentify, trackStartPreview, getHeroVariant } from './lib/posthog'
 
 const TOUR_URL = 'https://www.skillwell.com/take-a-tour'
+
+// ---- Hero copy A/B test ---------------------------------------------------
+// Each visitor is assigned control|variant (see getHeroVariant), evenly across
+// every UTM channel, and the variant rides on every PostHog event. To run the
+// test, replace the `variant` copy below. It currently mirrors `control`, so
+// the test is inert (no visible change) until you drop in the B copy.
+// headHighlight renders in the brand blue; leave it '' for no highlight.
+const HERO_COPY = {
+  control: {
+    eyebrow: 'For L&D leaders at Fortune 1000 companies',
+    headLead: 'Prove your training builds ',
+    headHighlight: 'real, on-the-job skills',
+    subhead: "See how Skillwell's AI learning platform makes this easy. Explore the 2-minute preview below.",
+  },
+  variant: {
+    eyebrow: 'For L&D leaders at Fortune 1000 companies',
+    headLead: 'AI That Learns ',
+    headHighlight: 'How You Learn',
+    subhead: "See how Skillwell's AI learning platform makes this easy. Explore the 2-minute preview below.",
+  },
+} as const
 
 // ---- HubSpot Forms API (unauthenticated submission endpoint) --------------
 const HS_PORTAL_ID = '2593232'
@@ -198,6 +219,7 @@ const FAQ = [
 ]
 
 export default function App() {
+  const hero = HERO_COPY[getHeroVariant()]
   return (
     <div className="min-h-screen bg-surface text-ink">
       {/* Header */}
@@ -213,12 +235,13 @@ export default function App() {
       <section className="bg-surface">
         <div className="mx-auto max-w-5xl px-5 py-8 lg:py-14">
           <div className="mx-auto max-w-4xl text-center">
-            <Eyebrow>For L&amp;D leaders at Fortune 1000 companies</Eyebrow>
+            <Eyebrow>{hero.eyebrow}</Eyebrow>
             <h1 className="mx-auto mt-3 max-w-[24ch] font-display text-[clamp(32px,4.6vw,52px)] font-bold leading-[1.06] tracking-tight text-ink text-balance">
-              Prove your training builds <span className="text-primary">real, on-the-job skills</span>
+              {hero.headLead}
+              {hero.headHighlight && <span className="text-primary">{hero.headHighlight}</span>}
             </h1>
             <p className="mx-auto mt-3 max-w-[46ch] text-[16px] leading-relaxed text-ink-soft">
-              See how Skillwell's AI learning platform makes this easy. Explore the 2-minute preview below.
+              {hero.subhead}
             </p>
           </div>
           <div className="mt-7">

@@ -22,6 +22,42 @@ export function initPostHog() {
     capture_pageleave: true,
     person_profiles: 'identified_only',
   })
+
+  // A/B copy test: stamp the assigned variant onto EVERY event as a super
+  // property, so conversion can be broken down by variant regardless of which
+  // UTM channel the visitor arrived through. Then fire a one-time exposure
+  // event (the denominator for the test).
+  const variant = getHeroVariant()
+  posthog.register({ copy_variant: variant })
+  posthog.capture('experiment_viewed', { experiment: HERO_EXPERIMENT, variant, ...getUTMs() })
+}
+
+// ---- Hero copy split test -------------------------------------------------
+export type HeroVariant = 'control' | 'variant'
+export const HERO_EXPERIMENT = 'hero_copy'
+const HERO_AB_KEY = 'sw_ab_hero'
+
+/**
+ * Assign (and persist) the visitor's hero-copy variant. 50/50, sticky per
+ * browser, and independent of UTM so every channel splits evenly. Add
+ * ?ab=control or ?ab=variant to the URL to force a variant for QA/screenshots.
+ */
+export function getHeroVariant(): HeroVariant {
+  if (typeof window === 'undefined') return 'control'
+  const forced = new URLSearchParams(window.location.search).get('ab')
+  if (forced === 'control' || forced === 'variant') {
+    try { localStorage.setItem(HERO_AB_KEY, forced) } catch { /* ignore */ }
+    return forced
+  }
+  try {
+    const saved = localStorage.getItem(HERO_AB_KEY)
+    if (saved === 'control' || saved === 'variant') return saved
+    const assigned: HeroVariant = Math.random() < 0.5 ? 'control' : 'variant'
+    localStorage.setItem(HERO_AB_KEY, assigned)
+    return assigned
+  } catch {
+    return Math.random() < 0.5 ? 'control' : 'variant'
+  }
 }
 
 // Captured ONCE at module load. This module is imported from the app entry
@@ -52,6 +88,7 @@ export function optInAndIdentify(data: { email: string; firstName: string; lastN
     email: data.email,
     first_name: data.firstName,
     last_name: data.lastName,
+    copy_variant: getHeroVariant(),
     ...utms,
   })
   posthog.capture('tour_form_submitted', utms)
