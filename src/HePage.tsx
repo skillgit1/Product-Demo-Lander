@@ -133,7 +133,7 @@ export default function HePage() {
               Deliver personalized and <span className="text-primary">immersive learning at scale</span>
             </h1>
             <p className="mx-auto mt-3 max-w-[48ch] text-[16px] leading-relaxed text-ink-soft">
-              Turn outdated courseware into adaptive, immersive learning that lifts engagement and lowers DFW rates. Explore the 2-minute preview below.
+              Transform your education into an adaptive and immersive experience that boosts engagement and outcomes. Learn how in the 2-minute preview below.
             </p>
           </div>
           <div className="mt-7">
