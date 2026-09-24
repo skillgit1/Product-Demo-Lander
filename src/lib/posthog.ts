@@ -22,11 +22,21 @@ export function initPostHog() {
     capture_pageleave: true,
     person_profiles: 'identified_only',
   })
+}
 
-  // A/B copy test: stamp the assigned variant onto EVERY event as a super
-  // property, so conversion can be broken down by variant regardless of which
-  // UTM channel the visitor arrived through. Then fire a one-time exposure
-  // event (the denominator for the test).
+/** Tag which landing page this is, so PostHog events segment by page. */
+export function markLandingPage(name: string) {
+  if (!started) initPostHog()
+  posthog.register({ landing_page: name })
+}
+
+/**
+ * Main landing page only: register the assigned hero-copy variant as a super
+ * property (rides every event, across all UTMs) and fire a one-time exposure
+ * event (the A/B test denominator). The /he page does NOT call this.
+ */
+export function trackHeroExperiment() {
+  if (!started) initPostHog()
   const variant = getHeroVariant()
   posthog.register({ copy_variant: variant })
   posthog.capture('experiment_viewed', { experiment: HERO_EXPERIMENT, variant, ...getUTMs() })

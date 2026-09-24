@@ -151,7 +151,7 @@ export function HeroReel() {
         <div className="scene sc-sim">
           <div className="sim-stage">
             <div className="sim-frame">
-              <img className="sim-vid" src="./avatar.gif" alt="Skillwell immersive simulation" />
+              <img className="sim-vid" src="/avatar.gif" alt="Skillwell immersive simulation" />
             </div>
           </div>
         </div>
