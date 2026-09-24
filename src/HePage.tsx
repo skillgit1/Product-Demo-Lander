@@ -6,20 +6,17 @@ import { trackStartPreview } from './lib/posthog'
 
 const TOUR_URL = 'https://www.skillwell.com/take-a-tour'
 
-const BRANDS = ['capgemini', 'merck', 'amazon', 'ochsner', 'microsoft'] as const
+const BRANDS = ['ucf', 'georgia-state', 'tec-monterrey'] as const
 const BRAND_ALT: Record<string, string> = {
-  capgemini: 'Capgemini',
-  merck: 'Merck',
-  amazon: 'Amazon',
-  ochsner: 'Ochsner Health',
-  microsoft: 'Microsoft',
+  ucf: 'University of Central Florida',
+  'georgia-state': 'Georgia State University',
+  'tec-monterrey': 'Tecnológico de Monterrey',
 }
+// Per-logo heights, tuned for optical balance (stacked marks need more height).
 const LOGO_H: Record<string, string> = {
-  capgemini: '24px',
-  merck: '24px',
-  amazon: '26px',
-  ochsner: '32px',
-  microsoft: '23px',
+  ucf: '32px',
+  'georgia-state': '40px',
+  'tec-monterrey': '30px',
 }
 
 function Arrow() {
@@ -152,7 +149,7 @@ export default function HePage() {
       <section className="border-y border-line bg-panel py-7">
         <div className="mx-auto max-w-6xl px-5">
           <p className="mb-5 text-center text-xs font-bold uppercase tracking-widest text-ink-muted">
-            Trusted by learning teams at
+            Trusted by institutions like
           </p>
           <div className="marquee">
             <div className="marquee-track">
