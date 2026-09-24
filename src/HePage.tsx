@@ -151,20 +151,19 @@ export default function HePage() {
           <p className="mb-5 text-center text-xs font-bold uppercase tracking-widest text-ink-muted">
             Trusted by institutions like
           </p>
-          <div className="marquee">
-            <div className="marquee-track">
-              {[...BRANDS, ...BRANDS].map((b, i) => (
-                <span key={b + i} className="mr-14 flex h-10 w-[120px] shrink-0 items-center justify-center">
-                  <img
-                    src={`/logos/${b}.png`}
-                    alt={i < BRANDS.length ? BRAND_ALT[b] : ''}
-                    aria-hidden={i >= BRANDS.length}
-                    style={{ maxHeight: LOGO_H[b], maxWidth: '100%' }}
-                    className="object-contain opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0"
-                  />
-                </span>
-              ))}
-            </div>
+          {/* Only three logos, so a centered, evenly-spaced row that fades in
+              (no scrolling marquee, which would repeat them). */}
+          <div className="he-logos mx-auto flex max-w-3xl flex-wrap items-center justify-center gap-x-16 gap-y-8 sm:gap-x-24">
+            {BRANDS.map((b) => (
+              <span key={b} className="flex h-11 w-[150px] items-center justify-center">
+                <img
+                  src={`/logos/${b}.png`}
+                  alt={BRAND_ALT[b]}
+                  style={{ maxHeight: LOGO_H[b], maxWidth: '100%' }}
+                  className="object-contain opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0"
+                />
+              </span>
+            ))}
           </div>
         </div>
       </section>

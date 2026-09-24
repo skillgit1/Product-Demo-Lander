@@ -24,3 +24,15 @@ html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
   .marquee-track { animation: none; }
 }
+
+/* Higher-ed logo row: static, centered, and softly faded in on load
+   (used in place of the scrolling marquee when there are only a few logos). */
+@keyframes heLogoFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+.he-logos { animation: heLogoFadeIn 0.9s ease both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .he-logos { animation: none; }
+}
