@@ -4,7 +4,8 @@ import { trackStartPreview } from './lib/posthog'
 // Higher-ed landing page (/he). Same components and design system as the main
 // page; only the copy is institution-focused. Not part of the hero A/B test.
 
-const TOUR_URL = 'https://www.skillwell.com/take-a-tour'
+// Higher-ed CTAs point to the higher-ed demo path (not the generic tour).
+const TOUR_URL = 'https://tryskillwell.com/he'
 
 const BRANDS = ['ucf', 'georgia-state', 'tec-monterrey'] as const
 const BRAND_ALT: Record<string, string> = {
@@ -137,7 +138,7 @@ export default function HePage() {
             </p>
           </div>
           <div className="mt-7">
-            <HeroReel />
+            <HeroReel href={TOUR_URL} />
           </div>
           <div id="tour-form" className="mt-6 scroll-mt-24">
             <StartPreviewButton />

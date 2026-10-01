@@ -39,7 +39,7 @@ const LABELS = ['Adaptive learning map', 'Drop in your content', 'Immersive simu
 const DUR = [4600, 4600, 6200, 4600]
 const v = (w: number) => ({ '--w': `${w}%` } as CSSProperties)
 
-export function HeroReel() {
+export function HeroReel({ href = 'https://www.skillwell.com/take-a-tour' }: { href?: string } = {}) {
   const rootRef = useRef<HTMLAnchorElement>(null)
 
   useEffect(() => {
@@ -102,7 +102,7 @@ export function HeroReel() {
   }, [])
 
   return (
-    <a ref={rootRef} className="player" href="https://www.skillwell.com/take-a-tour" onClick={() => trackStartPreview()} aria-label="Start the preview">
+    <a ref={rootRef} className="player" href={href} onClick={() => trackStartPreview()} aria-label="Start the preview">
       <div className="reel">
         {/* Scene 1: the real learning-map component, in a browser window */}
         <div className="scene sc-map is-active">
