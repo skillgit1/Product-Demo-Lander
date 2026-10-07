@@ -4,8 +4,8 @@ import { trackStartPreview } from './lib/posthog'
 // CBE / Direct Assessment landing page (/cbe). Cloned from the higher-ed page;
 // only the hero copy and CTA destination differ. Not part of the A/B test.
 
-// CBE CTAs point to the CBE demo path.
-const TOUR_URL = 'https://tryskillwell.com/cbe'
+// CBE CTAs funnel into the existing higher-ed demo (not a separate /cbe one).
+const TOUR_URL = 'https://tryskillwell.com/he'
 
 const BRANDS = ['ucf', 'georgia-state', 'tec-monterrey'] as const
 const BRAND_ALT: Record<string, string> = {
