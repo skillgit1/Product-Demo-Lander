@@ -13,13 +13,14 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: { dedupe: ['react', 'react-dom'] },
   optimizeDeps: { include: ['react', 'react-dom', 'react/jsx-runtime'] },
-  // Multi-page build: the main landing page at the site root, and the
-  // higher-ed page at /he/ (served as preview.tryskillwell.com/he).
+  // Multi-page build: the main landing page at the site root, plus the
+  // vertical pages at /he/ (higher ed) and /cbe/ (CBE / Direct Assessment).
   build: {
     rollupOptions: {
       input: {
         main: resolve(root, 'index.html'),
         he: resolve(root, 'he/index.html'),
+        cbe: resolve(root, 'cbe/index.html'),
       },
     },
   },
