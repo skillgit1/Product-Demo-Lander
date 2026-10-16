@@ -1,0 +1,6 @@
+node_modules/
+video/
+*.webm
+skillwell-reel.gif
+skillwell-reel.mp4
+package-lock.json

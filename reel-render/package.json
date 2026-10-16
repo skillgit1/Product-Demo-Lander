@@ -1,0 +1,9 @@
+{
+  "name": "reel-render",
+  "private": true,
+  "type": "module",
+  "description": "Isolated Playwright project that renders the hero reel to GIF/MP4 on CI. Kept separate from the main app's dependencies on purpose.",
+  "dependencies": {
+    "playwright": "^1.48.0"
+  }
+}

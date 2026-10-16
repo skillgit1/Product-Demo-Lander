@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Skillwell product reel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet" />
+<style>
+  /* ---- design tokens (lifted from Skillwell theme.css) ---- */
+  :root {
+    --color-primary: #005e8d;
+    --color-primary-hover: #004a70;
+    --color-primary-soft: #e6f0f6;
+    --color-oasis: #00bf80;
+    --color-ocean: #004853;
+    --color-navy: #004853;
+    --color-ink: #16211f;
+    --color-ink-soft: #4b565a;
+    --color-ink-muted: #808b8f;
+    --color-surface: #f6f7f8;
+    --color-sunken: #eef0f1;
+    --color-line: #e1e5e6;
+    --color-line-strong: #c9cfd1;
+    --color-success: #23a566;
+    --color-danger: #d43c3c;
+    --color-node-complete: #23a566;
+    --color-node-verified: #00bf80;
+    --color-node-current: #005e8d;
+    --color-node-locked: #b7c0c1;
+    --font-display: "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --radius-xl: 16px;
+    --shadow-overlay: 0 12px 40px rgba(16, 41, 46, 0.2);
+  }
+  html, body { margin: 0; }
+  body {
+    font-family: var(--font-display);
+    background: #f0f3f5;
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    padding: 24px;
+    box-sizing: border-box;
+  }
+
+  /* =========================================================
+     Reel (ported from reel.css — four looping scenes). The three
+     software screens render in a tilted floating browser window;
+     the simulation GIF sits grounded on a desk. Scene 1's live
+     learning-map component is replaced by a static SVG map so this
+     file is fully self-contained.
+     ========================================================= */
+  .player { position:relative; display:block; width:100%; max-width:720px; aspect-ratio:16/9; margin:0 auto; border-radius:var(--radius-xl); overflow:hidden; box-shadow:var(--shadow-overlay), 0 0 0 1px rgba(0,72,83,.06); text-decoration:none; container-type:inline-size; background:var(--color-surface); }
+  .reel { position:absolute; inset:0; font-size:clamp(9px,2.35cqw,17px); color:var(--color-ink); }
+  .scene { position:absolute; inset:0; opacity:0; z-index:1; transform:scale(1.014); transition:opacity .18s ease, transform .6s cubic-bezier(.2,.7,.2,1); overflow:hidden; }
+  .scene.is-active { opacity:1; z-index:2; transition:opacity .28s ease, transform .6s cubic-bezier(.2,.7,.2,1); transform:scale(1); }
+
+  .reel-chrome { position:absolute; z-index:6; left:0.9em; bottom:0.9em; display:flex; align-items:center; gap:0.7em; }
+  .reel-tag { font-size:0.78em; font-weight:700; color:#fff; background:rgba(0,51,60,.62); padding:0.42em 0.85em; border-radius:999px; backdrop-filter:blur(6px); white-space:nowrap; box-shadow:inset 0 0 0 1px rgba(255,255,255,.14); }
+  .reel-bars { display:flex; gap:0.32em; width:8.5em; }
+  .reel-bars > span { position:relative; flex:1; height:0.26em; border-radius:1em; background:rgba(0,51,60,.18); overflow:hidden; }
+  .reel-bars i { position:absolute; inset:0 auto 0 0; width:0; background:var(--color-oasis); border-radius:1em; }
+  .reel-cta { position:absolute; z-index:6; right:0.9em; bottom:0.9em; font-size:0.78em; font-weight:700; color:#fff; background:rgba(0,94,141,.92); padding:0.42em 0.9em; border-radius:999px; opacity:0; transform:translateY(0.35em); transition:opacity .2s, transform .2s; box-shadow:0 0.4em 1em rgba(0,72,83,.35); }
+  .player:hover .reel-cta { opacity:1; transform:none; }
+
+  /* ---- shared: software screens in a floating browser window ---- */
+  .sc-map, .sc-upload, .sc-report { display:grid; place-items:center; perspective:1200px;
+    background:linear-gradient(155deg, #eef4f7 0%, #d9e7ee 60%, #c6d7df 100%); }
+  .win-stage { position:relative; z-index:1; width:76%; transform-style:preserve-3d; animation:simFloat 7s ease-in-out infinite; }
+  .win { border-radius:0.7em; overflow:hidden; background:#fff; transform:rotateY(-12deg) rotateX(6deg);
+    box-shadow:0 1.8em 3.4em rgba(16,41,46,.30), 0 0 0 1px rgba(16,41,46,.06); }
+  .win-bar { display:flex; align-items:center; gap:0.4em; height:1.7em; padding:0 0.7em; background:#eef1f3; border-bottom:1px solid rgba(16,41,46,.07); }
+  .win-bar i { width:0.42em; height:0.42em; border-radius:50%; }
+  .win-bar i:nth-child(1){ background:#ff5f57; } .win-bar i:nth-child(2){ background:#febc2e; } .win-bar i:nth-child(3){ background:#28c840; }
+  .win-bar .url { margin-left:0.5em; font-size:0.46em; font-weight:600; color:#8a94a6; background:#fff; border-radius:0.4em; padding:0.2em 0.7em; }
+  .win-body { position:relative; aspect-ratio:16/9; overflow:hidden; background:#fff; }
+
+  /* Scene 1: static learning-map SVG inside the window */
+  .map-holder { position:absolute; inset:0; }
+  .map-holder svg { display:block; width:100%; height:100%; }
+  .map-bg { fill:#f7fafb; }
+  .map-grid { stroke:#e3ebee; stroke-width:0.5; }
+  .map-link { fill:none; stroke:#cdd8dc; stroke-width:2; stroke-linecap:round; }
+  .map-link.done { stroke:var(--color-node-complete); }
+  .n-label { font-family:var(--font-display); font-size:6px; font-weight:600; fill:var(--color-ink-soft); text-anchor:middle; }
+  .map-chip { font-family:var(--font-display); font-size:7px; font-weight:700; fill:var(--color-primary); }
+
+  /* Scene 2: drop in your content */
+  .win-body.up-screen { background:var(--color-surface); display:grid; place-items:center; }
+  .up-card { width:82%; background:#fff; border-radius:0.8em; box-shadow:0 0.8em 2em rgba(16,41,46,.14); padding:1.1em 1.2em; text-align:center; }
+  .up-eyebrow { font-size:0.55em; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:var(--color-primary); }
+  .up-title { display:block; font-family:var(--font-display); font-size:1.15em; font-weight:700; color:var(--color-ink); margin:0.4em 0 0.8em; letter-spacing:-0.01em; }
+  .up-zone { position:relative; border:0.14em dashed var(--color-line-strong); border-radius:0.6em; padding:1.2em 1em; display:flex; flex-direction:column; align-items:center; gap:0.45em; background:#fafbfc; }
+  .up-zicon { width:2.2em; height:2.2em; border-radius:50%; background:var(--color-primary-soft); color:var(--color-primary); display:grid; place-items:center; }
+  .up-zicon svg { width:1.1em; height:1.1em; }
+  .up-ztext { font-size:0.72em; font-weight:700; color:var(--color-ink); }
+  .up-ztext.done { position:absolute; opacity:0; color:var(--color-success); }
+  .filecard { position:absolute; top:6%; right:10%; z-index:3; width:3em; filter:drop-shadow(0 0.6em 1em rgba(0,0,0,.28)); }
+  .filecard .sheet { position:relative; aspect-ratio:3/4; background:#fff; border:1px solid var(--color-line); border-radius:0.3em; overflow:hidden; }
+  .filecard .sheet::before { content:""; position:absolute; top:0; right:0; border-width:0 0.8em 0.8em 0; border-style:solid; border-color:transparent var(--color-sunken) transparent transparent; }
+  .filecard .lines { position:absolute; left:0.35em; right:0.35em; top:1em; display:flex; flex-direction:column; gap:0.24em; }
+  .filecard .lines span { height:0.15em; border-radius:1em; background:var(--color-line-strong); }
+  .filecard .lines span:nth-child(3){ width:70%; }
+  .filecard .badge { position:absolute; left:0.3em; bottom:0.35em; background:var(--color-danger); color:#fff; font-size:0.4em; font-weight:800; padding:0.14em 0.4em; border-radius:0.24em; letter-spacing:.03em; }
+  .filecard .fname { margin-top:0.4em; text-align:center; font-size:0.46em; font-weight:600; color:var(--color-ink-soft); white-space:nowrap; }
+
+  /* Scene 3: simulation GIF, grounded on a desk (no browser) */
+  .sc-sim { display:grid; place-items:center; perspective:1200px;
+    background:linear-gradient(165deg, #f4f0e8 0%, #e7ddcb 62%, #d6c8ad 100%); }
+  .sim-stage { position:relative; z-index:1; width:60%; animation:simFloat 7s ease-in-out infinite; }
+  .sim-frame { border-radius:0.6em; overflow:hidden; transform:rotateY(-6deg) rotateX(3deg);
+    box-shadow:0 1.6em 3em rgba(16,41,46,.32), 0 0 0 1px rgba(16,41,46,.05); }
+  .sim-vid { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; }
+  .sim-stage::after { content:""; position:absolute; left:5%; right:5%; bottom:-8%; height:11%; z-index:-1;
+    background:radial-gradient(ellipse at center, rgba(16,41,46,.24), transparent 70%); filter:blur(3px); }
+
+  /* Scene 4: skills report — screen scrolls through the full report */
+  .rep-scroll { position:absolute; inset:0 0 auto 0; padding:1em 1.15em; will-change:transform; }
+  .rep-ey { font-size:0.55em; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--color-primary); }
+  .rep-h { display:block; font-family:var(--font-display); font-size:1.05em; font-weight:700; color:var(--color-ink); margin:0.15em 0 0.1em; letter-spacing:-0.01em; }
+  .rep-meta { font-size:0.55em; color:var(--color-ink-muted); }
+  .rep-stats { display:flex; gap:0.6em; margin:0.8em 0 1em; }
+  .rep-tile { flex:1; border:1px solid var(--color-line); border-radius:0.55em; padding:0.5em 0.6em; }
+  .rep-tile b { display:block; font-size:1.25em; font-weight:800; color:var(--color-ink); line-height:1; }
+  .rep-tile span { font-size:0.5em; color:var(--color-ink-soft); }
+  .rep-donut { display:flex; align-items:center; gap:0.5em; border:1px solid var(--color-line); border-radius:0.55em; padding:0.45em 0.6em; }
+  .rep-donut svg { width:2.2em; height:2.2em; flex:none; }
+  .rep-donut .dl b { display:block; font-size:0.9em; font-weight:800; color:var(--color-ink); }
+  .rep-donut .dl span { font-size:0.48em; color:var(--color-ink-soft); }
+  .rep-block { margin-bottom:1em; }
+  .rep-blocktitle { display:block; font-size:0.58em; font-weight:800; color:var(--color-ink); margin-bottom:0.5em; letter-spacing:-0.01em; }
+  .rep-row { display:grid; grid-template-columns:8.5em 1fr 2.3em; align-items:center; gap:0.5em; margin-bottom:0.38em; }
+  .rep-label { font-size:0.52em; font-weight:600; color:var(--color-ink); text-align:right; line-height:1.15; }
+  .rep-track { height:0.5em; border-radius:0.3em; background:var(--color-sunken); overflow:hidden; }
+  .rep-track i { display:block; height:100%; width:0; background:var(--color-primary); border-radius:0.3em; }
+  .rep-val { font-size:0.54em; font-weight:700; color:var(--color-ink-soft); text-align:right; font-variant-numeric:tabular-nums; }
+  .rep-row2 { display:grid; grid-template-columns:8.5em 1fr 2.5em; align-items:center; gap:0.5em; margin-bottom:0.46em; }
+  .rep-bars { display:flex; flex-direction:column; gap:0.2em; }
+  .rep-bars i { height:0.42em; border-radius:0.3em; width:0; }
+  .bar-first { background:#bfe6cf; }
+  .bar-last { background:var(--color-success); }
+  .rep-delta { font-size:0.58em; font-weight:800; text-align:right; font-variant-numeric:tabular-nums; }
+  .rep-delta.up { color:var(--color-success); } .rep-delta.flat { color:var(--color-ink-muted); } .rep-delta.down { color:var(--color-danger); }
+
+  /* ---- animations ---- */
+  .sc-map.is-active .win, .sc-upload.is-active .win, .sc-report.is-active .win { animation:winIn .7s cubic-bezier(.2,.7,.2,1) both; }
+  .sc-sim.is-active .sim-frame { animation:simIn .7s cubic-bezier(.2,.7,.2,1) both; }
+  .sc-upload.is-active .filecard { animation:fileDrop 2s cubic-bezier(.5,.05,.2,1) both .3s; }
+  .sc-upload.is-active .up-zone { animation:zoneHi .45s both 1.55s; }
+  .sc-upload.is-active .up-ztext.main { animation:swapOut .3s both 1.7s; }
+  .sc-upload.is-active .up-ztext.done { animation:swapIn .3s both 1.85s; }
+  .sc-report.is-active .rep-track i,
+  .sc-report.is-active .rep-bars i { animation:grow .8s cubic-bezier(.2,.7,.2,1) both .2s; }
+
+  @keyframes simFloat { 0%,100% { transform:translateY(-1.6%); } 50% { transform:translateY(1.6%); } }
+  @keyframes winIn { from { opacity:0; transform:rotateY(-26deg) rotateX(6deg) scale(.9) translateX(7%); } to { opacity:1; transform:rotateY(-12deg) rotateX(6deg) scale(1) translateX(0); } }
+  @keyframes simIn { from { opacity:0; transform:rotateY(-16deg) rotateX(3deg) scale(.92); } to { opacity:1; transform:rotateY(-6deg) rotateX(3deg) scale(1); } }
+  @keyframes fileDrop {
+    0% { top:6%; right:10%; transform:scale(1) rotate(4deg); opacity:0; }
+    12% { opacity:1; }
+    62% { top:42%; right:calc(50% - 1.5em); transform:scale(.6) rotate(0); opacity:1; }
+    78% { top:42%; right:calc(50% - 1.5em); transform:scale(.4) rotate(0); opacity:0; }
+    100% { opacity:0; }
+  }
+  @keyframes zoneHi { to { border-color:var(--color-primary); background:var(--color-primary-soft); } }
+  @keyframes swapOut { to { opacity:0; transform:translateY(-0.4em); } }
+  @keyframes swapIn { from { opacity:0; transform:translateY(0.4em); } to { opacity:1; transform:none; } }
+  @keyframes grow { from { width:0; } to { width:var(--w); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scene, .scene * { animation:none !important; transition-duration:.001ms !important; }
+  }
+</style>
+</head>
+<body>
+  <!-- Change or remove href to point the whole reel wherever you like. -->
+  <div class="player">
+    <div class="reel">
+
+      <!-- Scene 1: static learning map in a browser window -->
+      <div class="scene sc-map is-active">
+        <div class="win-stage">
+          <div class="win">
+            <div class="win-bar"><i></i><i></i><i></i><span class="url">app.skillwell.com/map</span></div>
+            <div class="win-body">
+              <div class="map-holder">
+                <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                  <rect class="map-bg" x="0" y="0" width="320" height="180" />
+                  <g class="map-grid">
+                    <line x1="0" y1="45" x2="320" y2="45" /><line x1="0" y1="90" x2="320" y2="90" /><line x1="0" y1="135" x2="320" y2="135" />
+                    <line x1="80" y1="0" x2="80" y2="180" /><line x1="160" y1="0" x2="160" y2="180" /><line x1="240" y1="0" x2="240" y2="180" />
+                  </g>
+                  <!-- links -->
+                  <path class="map-link done" d="M40,90 C70,90 80,55 110,55" />
+                  <path class="map-link done" d="M40,90 C70,90 80,125 110,125" />
+                  <path class="map-link done" d="M110,55 C150,55 155,90 185,90" />
+                  <path class="map-link" d="M110,125 C150,125 155,90 185,90" />
+                  <path class="map-link" d="M185,90 C220,90 225,52 255,52" />
+                  <path class="map-link" d="M185,90 C220,90 225,130 255,130" />
+                  <path class="map-link" d="M255,52 C285,52 288,90 300,90" />
+                  <path class="map-link" d="M255,130 C285,130 288,90 300,90" />
+                  <!-- nodes: complete(green+check) verified current(blue) available(outline) locked(grey) -->
+                  <g>
+                    <circle cx="40" cy="90" r="11" fill="var(--color-node-complete)" />
+                    <path d="M35,90 l3.5,3.5 l6.5,-7" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <text class="n-label" x="40" y="112">Foundations</text>
+                  </g>
+                  <g>
+                    <circle cx="110" cy="55" r="11" fill="var(--color-node-complete)" />
+                    <path d="M105,55 l3.5,3.5 l6.5,-7" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <text class="n-label" x="110" y="36">Expectations</text>
+                  </g>
+                  <g>
+                    <circle cx="110" cy="125" r="11" fill="var(--color-node-verified)" />
+                    <path d="M105,125 l3.5,3.5 l6.5,-7" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <text class="n-label" x="110" y="147">Feedback</text>
+                  </g>
+                  <g>
+                    <circle cx="185" cy="90" r="12" fill="var(--color-node-current)" />
+                    <circle cx="185" cy="90" r="16" fill="none" stroke="var(--color-node-current)" stroke-width="1.5" opacity="0.35" />
+                    <circle cx="185" cy="90" r="4.5" fill="#fff" />
+                    <text class="n-label" x="185" y="114">Coaching</text>
+                  </g>
+                  <g>
+                    <circle cx="255" cy="52" r="11" fill="#fff" stroke="var(--color-node-current)" stroke-width="2" />
+                    <text class="n-label" x="255" y="33">Difficult Talks</text>
+                  </g>
+                  <g>
+                    <circle cx="255" cy="130" r="11" fill="var(--color-node-locked)" />
+                    <rect x="252" y="127" width="6" height="5" rx="1" fill="#fff" />
+                    <path d="M253.2,127 v-1.4 a1.8,1.8 0 0 1 3.6,0 v1.4" fill="none" stroke="#fff" stroke-width="1.1" />
+                    <text class="n-label" x="255" y="152">Customer First</text>
+                  </g>
+                  <g>
+                    <circle cx="300" cy="90" r="11" fill="var(--color-node-locked)" />
+                    <rect x="297" y="87" width="6" height="5" rx="1" fill="#fff" />
+                    <path d="M298.2,87 v-1.4 a1.8,1.8 0 0 1 3.6,0 v1.4" fill="none" stroke="#fff" stroke-width="1.1" />
+                    <text class="n-label" x="300" y="112">Mastery</text>
+                  </g>
+                  <text class="map-chip" x="12" y="20">Leadership Path</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene 2: drop in your content -->
+      <div class="scene sc-upload">
+        <div class="win-stage">
+          <div class="win">
+            <div class="win-bar"><i></i><i></i><i></i><span class="url">app.skillwell.com/build</span></div>
+            <div class="win-body up-screen">
+              <div class="up-card">
+                <span class="up-eyebrow">Optional, but this is the magic</span>
+                <span class="up-title">Have existing training content?</span>
+                <div class="up-zone">
+                  <span class="up-zicon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6" /></svg>
+                  </span>
+                  <span class="up-ztext main">Drop your document here or click to browse</span>
+                  <span class="up-ztext done">Got it. Building your learning map</span>
+                </div>
+              </div>
+              <div class="filecard">
+                <div class="sheet">
+                  <div class="lines"><span></span><span></span><span></span></div>
+                  <span class="badge">PDF</span>
+                </div>
+                <div class="fname">Leadership-Handbook.pdf</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene 3: simulation GIF, grounded on a desk -->
+      <div class="scene sc-sim">
+        <div class="sim-stage">
+          <div class="sim-frame">
+            <img class="sim-vid" src="./avatar.gif" alt="Skillwell immersive simulation" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene 4: skills report — screen scrolls through it -->
+      <div class="scene sc-report">
+        <div class="win-stage">
+          <div class="win">
+            <div class="win-bar"><i></i><i></i><i></i><span class="url">app.skillwell.com/insights</span></div>
+            <div class="win-body">
+              <div class="rep-scroll">
+                <span class="rep-ey">Auto-Insights</span>
+                <span class="rep-h">Skills Performance</span>
+                <span class="rep-meta">Meridian Health &middot; Introduction to Management</span>
+                <div class="rep-stats">
+                  <div class="rep-tile"><b>35</b><span>Learners engaged</span></div>
+                  <div class="rep-tile"><b>24</b><span>Completed</span></div>
+                  <div class="rep-donut">
+                    <svg viewBox="0 0 36 36">
+                      <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--color-sunken)" stroke-width="4" />
+                      <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--color-oasis)" stroke-width="4" stroke-dasharray="68.6 100" stroke-linecap="round" transform="rotate(-90 18 18)" />
+                    </svg>
+                    <div class="dl"><b>68.6%</b><span>Completion</span></div>
+                  </div>
+                </div>
+                <div class="rep-block">
+                  <span class="rep-blocktitle">Average score, first attempt</span>
+                  <div id="rep-first"></div>
+                </div>
+                <div class="rep-block">
+                  <span class="rep-blocktitle">Score improvements: first vs last attempt</span>
+                  <div id="rep-improve"></div>
+                </div>
+                <div class="rep-block">
+                  <span class="rep-blocktitle">Time on task, by attempts (minutes)</span>
+                  <div id="rep-time"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+(function () {
+  var SKILLS = ['Overall Performance','Set Clear Expectations','Deliver Constructive Feedback','Coach and Develop Others','Adapt Your Leadership Style','Navigate Difficult Conversations','Put the Customer First'];
+  var FIRST = [67.6, 69.6, 72.3, 56.8, 65.0, 68.4, 67.0];
+  var IMPROVE = [
+    { first:75.0, last:75.0, delta:'0.0%',   cls:'flat' },
+    { first:80.0, last:90.0, delta:'+10.0%', cls:'up' },
+    { first:77.8, last:77.8, delta:'0.0%',   cls:'flat' },
+    { first:62.5, last:87.5, delta:'+25.0%', cls:'up' },
+    { first:75.0, last:66.7, delta:'−8.3%', cls:'down' },
+    { first:66.7, last:66.7, delta:'0.0%',   cls:'flat' },
+    { first:66.7, last:66.7, delta:'0.0%',   cls:'flat' }
+  ];
+  var TIME = [
+    { label:'All Attempts', mins:18.7, w:5 },
+    { label:'1 Attempt',    mins:18.7, w:5 },
+    { label:'2 Attempts',   mins:65.1, w:19 },
+    { label:'3 Attempts',   mins:316.1, w:93 },
+    { label:'4+ Attempts',  mins:341.1, w:100 }
+  ];
+  var LABELS = ['Adaptive learning map','Drop in your content','Immersive simulations','Skills that prove ROI'];
+  var DUR = [4600, 4600, 6200, 4600];
+
+  // Build the report rows (mirrors the React .map() output)
+  function row(label, w, val) {
+    return '<div class="rep-row"><span class="rep-label">' + label + '</span>' +
+           '<div class="rep-track"><i style="--w:' + w + '%"></i></div>' +
+           '<span class="rep-val">' + val + '</span></div>';
+  }
+  var firstHtml = SKILLS.map(function (s, k) { return row(s, FIRST[k], FIRST[k].toFixed(1)); }).join('');
+  var improveHtml = IMPROVE.map(function (r, k) {
+    return '<div class="rep-row2"><span class="rep-label">' + SKILLS[k] + '</span>' +
+           '<div class="rep-bars"><i class="bar-first" style="--w:' + r.first + '%"></i>' +
+           '<i class="bar-last" style="--w:' + r.last + '%"></i></div>' +
+           '<span class="rep-delta ' + r.cls + '">' + r.delta + '</span></div>';
+  }).join('');
+  var timeHtml = TIME.map(function (t) { return row(t.label, t.w, t.mins.toFixed(1)); }).join('');
+  document.getElementById('rep-first').innerHTML = firstHtml;
+  document.getElementById('rep-improve').innerHTML = improveHtml;
+  document.getElementById('rep-time').innerHTML = timeHtml;
+
+  var root = document.querySelector('.player');
+  var scenes = Array.prototype.slice.call(root.querySelectorAll('.scene'));
+  var fills = Array.prototype.slice.call(root.querySelectorAll('.reel-bars-nav i'));
+  var tag = root.querySelector('.reel-tag');
+  var scroll = root.querySelector('.rep-scroll');
+  var reportBody = root.querySelector('.sc-report .win-body');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var i = 0, timer = 0;
+
+  function show(n) {
+    scenes.forEach(function (s, k) { s.classList.toggle('is-active', k === n); });
+    if (tag) tag.textContent = LABELS[n];
+    fills.forEach(function (f, k) {
+      f.style.transition = 'none';
+      f.style.width = k < n ? '100%' : '0%';
+      if (k === n && !reduce) {
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            f.style.transition = 'width ' + DUR[n] + 'ms linear';
+            f.style.width = '100%';
+          });
+        });
+      } else if (k === n) {
+        f.style.width = '100%';
+      }
+    });
+    if (scroll && reportBody) {
+      scroll.style.transition = 'none';
+      scroll.style.transform = 'translateY(0)';
+      if (n === 3 && !reduce) {
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            var dist = Math.max(0, scroll.scrollHeight - reportBody.clientHeight);
+            scroll.style.transition = 'transform ' + (DUR[3] - 300) + 'ms cubic-bezier(.4,0,.5,1)';
+            scroll.style.transform = 'translateY(' + (-dist) + 'px)';
+          });
+        });
+      }
+    }
+  }
+
+  function schedule() {
+    timer = window.setTimeout(function () {
+      i = (i + 1) % scenes.length;
+      show(i);
+      schedule();
+    }, DUR[i]);
+  }
+
+  show(0);
+  if (!reduce) schedule();
+})();
+</script>
+</body>
+</html>

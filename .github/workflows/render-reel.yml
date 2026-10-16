@@ -1,0 +1,52 @@
+name: Render reel to GIF + MP4
+
+# Manual-only. Renders reel-render/clean-reel.html in a real headless Chromium
+# on GitHub's servers (no corporate endpoint-security to kill the browser, no
+# memory cap), then encodes a GIF and an MP4 and uploads them as a downloadable
+# artifact. Playwright is installed in the isolated reel-render/ project so it
+# never touches the main app's dependencies. Does NOT touch the site deploy.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Playwright + Chromium (isolated)
+        working-directory: reel-render
+        run: |
+          npm install
+          npx playwright install --with-deps chromium
+
+      - name: Record the reel (one loop -> webm)
+        working-directory: reel-render
+        run: node record.mjs
+
+      - name: Encode GIF + MP4 with ffmpeg
+        run: |
+          WEBM="$(ls reel-render/video/*.webm | head -1)"
+          echo "Source video: $WEBM"
+          # MP4 (H.264, broadly compatible, web-ready)
+          ffmpeg -y -i "$WEBM" -vf "scale=1280:-2:flags=lanczos,format=yuv420p" \
+            -c:v libx264 -crf 18 -movflags +faststart reel-render/skillwell-reel.mp4
+          # GIF (high-quality palette so gradients + the avatar scene look clean)
+          ffmpeg -y -i "$WEBM" -vf \
+            "fps=15,scale=720:-2:flags=lanczos,split[s0][s1];[s0]palettegen=stats_mode=diff[p];[s1][p]paletteuse=dither=bayer:bayer_scale=3" \
+            -loop 0 reel-render/skillwell-reel.gif
+          ls -la reel-render/skillwell-reel.mp4 reel-render/skillwell-reel.gif
+
+      - name: Upload the GIF + MP4
+        uses: actions/upload-artifact@v4
+        with:
+          name: skillwell-reel
+          path: |
+            reel-render/skillwell-reel.gif
+            reel-render/skillwell-reel.mp4
+          if-no-files-found: error
