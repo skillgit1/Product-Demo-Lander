@@ -109,3 +109,15 @@ export function trackStartPreview() {
   if (!started) initPostHog()
   posthog.capture('start_preview_clicked', getUTMs())
 }
+
+/**
+ * DevLearn 2026 page only: fired when a visitor clicks any "Book a demo"
+ * link. `location` says which spot on the page it was (hero, pricing card,
+ * closing section), so click through rate is readable per CTA in PostHog.
+ * The link itself already carries the campaign's own UTMs to HubSpot; this
+ * just mirrors the click into PostHog without touching that query string.
+ */
+export function trackDevLearnCTA(location: string) {
+  if (!started) initPostHog()
+  posthog.capture('devlearn_cta_clicked', { location, ...getUTMs() })
+}

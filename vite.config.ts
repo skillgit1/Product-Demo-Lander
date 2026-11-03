@@ -14,13 +14,15 @@ export default defineConfig({
   resolve: { dedupe: ['react', 'react-dom'] },
   optimizeDeps: { include: ['react', 'react-dom', 'react/jsx-runtime'] },
   // Multi-page build: the main landing page at the site root, plus the
-  // vertical pages at /he/ (higher ed) and /cbe/ (CBE / Direct Assessment).
+  // vertical pages at /he/ (higher ed), /cbe/ (CBE / Direct Assessment), and
+  // /devlearn/ (DevLearn 2026 event-exclusive pricing page).
   build: {
     rollupOptions: {
       input: {
         main: resolve(root, 'index.html'),
         he: resolve(root, 'he/index.html'),
         cbe: resolve(root, 'cbe/index.html'),
+        devlearn: resolve(root, 'devlearn/index.html'),
       },
     },
   },
