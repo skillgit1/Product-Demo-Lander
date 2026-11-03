@@ -196,10 +196,10 @@ export default function DevLearnPage() {
 
       {/* Hero */}
       <section className="bg-surface">
-        <div className="mx-auto max-w-5xl px-5 py-8 lg:py-14">
+        <div className="mx-auto max-w-5xl px-5 pb-8 pt-5 lg:pb-14 lg:pt-10">
           <div className="mx-auto max-w-3xl text-center">
-            <div className="inline-flex items-center rounded-btn bg-gradient-to-r from-navy to-primary px-4 py-2 shadow-[0_6px_18px_rgba(0,72,83,0.3)]">
-              <span className="text-sm font-bold text-white">DevLearn 2026 Exclusive Offer</span>
+            <div className="inline-flex items-center rounded-btn bg-gradient-to-r from-navy to-primary px-3.5 py-1.5 shadow-[0_2px_8px_rgba(0,72,83,0.18)]">
+              <span className="text-xs font-semibold tracking-wide text-white">DevLearn 2026 Exclusive Offer</span>
             </div>
             <h1 className="mx-auto mt-4 max-w-[16ch] font-display text-[clamp(38px,5.6vw,64px)] font-bold leading-[1.04] tracking-tight text-ink text-balance">
               Try Skillwell for Free
