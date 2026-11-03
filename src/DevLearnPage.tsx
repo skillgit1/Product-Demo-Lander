@@ -372,7 +372,7 @@ export default function DevLearnPage() {
           </div>
 
           <p className="mt-6 text-sm text-ink-muted">
-            DevLearn 2026 exclusive. Offer valid on agreements started by November 30, 2026.
+            This is only available to new customers who sign up at DevLearn and start their trial by the end of November.
           </p>
         </div>
       </section>
