@@ -379,7 +379,6 @@ export default function DevLearnPage() {
                   '2 branching simulations',
                   '1 adaptive course',
                   'Skills data reporting',
-                  'Unlimited learners',
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2.5 text-[14.5px] text-ink-soft">
                     <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-success-soft text-success">
@@ -406,7 +405,7 @@ export default function DevLearnPage() {
               <h3 className="mt-2 font-display text-xl font-bold tracking-tight text-ink">Skillwell Free Trial</h3>
               <p className="mt-3 flex items-baseline gap-1">
                 <span className="text-4xl font-bold tracking-tight text-ink">$0</span>
-                <span className="text-sm font-semibold text-ink-muted">for your first month</span>
+                <span className="text-sm font-semibold text-ink-muted">for 30 days</span>
               </p>
               <ul className="mt-6 flex flex-col gap-3">
                 {[
