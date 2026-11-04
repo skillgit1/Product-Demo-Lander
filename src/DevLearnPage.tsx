@@ -80,23 +80,28 @@ function MeetingModal({ open, onClose }: { open: boolean; onClose: () => void })
 
   return (
     <div
-      className={open ? 'fixed inset-0 z-50 flex items-center justify-center bg-ink/60 p-4' : 'hidden'}
+      className={open ? 'fixed inset-0 z-50 flex justify-center bg-ink/60 sm:items-center sm:p-4' : 'hidden'}
       onClick={onClose}
       aria-hidden={!open}
     >
+      {/* Full-screen sheet on phones (no margins to fight the calendar grid
+          for width); a centered, bounded card from sm up. */}
       <div
-        className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-[var(--shadow-overlay)]"
+        className="flex h-full w-full flex-col bg-white sm:h-auto sm:max-h-[90vh] sm:max-w-2xl sm:rounded-2xl sm:shadow-[var(--shadow-overlay)]"
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Close"
-          className="absolute right-3 top-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-sunken text-ink transition-colors hover:bg-line-strong"
-        >
-          <XIcon />
-        </button>
-        <div className="meetings-iframe-container min-h-[480px] p-2 pt-12" data-src={MEETING_EMBED_SRC} />
+        <div className="flex shrink-0 items-center justify-between border-b border-line px-4 py-3 sm:border-0 sm:px-4 sm:pb-0 sm:pt-4">
+          <span className="text-sm font-bold text-ink">Schedule your onboarding call</span>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-sunken text-ink transition-colors hover:bg-line-strong"
+          >
+            <XIcon />
+          </button>
+        </div>
+        <div className="meetings-iframe-container min-h-0 flex-1 overflow-y-auto" data-src={MEETING_EMBED_SRC} />
       </div>
     </div>
   )
