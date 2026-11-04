@@ -402,11 +402,8 @@ export default function DevLearnPage() {
             {/* Free Trial */}
             <div className="flex flex-col rounded-2xl border border-line bg-panel p-7 shadow-[var(--shadow-card)]">
               <p className="text-sm font-bold text-primary">DevLearn Exclusive Offer</p>
-              <h3 className="mt-2 font-display text-xl font-bold tracking-tight text-ink">Skillwell Free Trial</h3>
-              <p className="mt-3 flex items-baseline gap-1">
-                <span className="text-4xl font-bold tracking-tight text-ink">$0</span>
-                <span className="text-sm font-semibold text-ink-muted">for 30 days</span>
-              </p>
+              <h3 className="mt-2 font-display text-xl font-bold tracking-tight text-ink">Skillwell 30 Day Free Trial</h3>
+              <p className="mt-3 text-4xl font-bold tracking-tight text-ink">$0</p>
               <ul className="mt-6 flex flex-col gap-3">
                 {[
                   '60 minutes of conversational simulation',
