@@ -1,25 +1,17 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { trackDevLearnCTA } from './lib/posthog'
 
 // DevLearn 2026 event page (/devlearn). A pricing-forward exclusive for
 // DevLearn attendees: same stack and tokens as the rest of the site, but its
-// own copy, its own CTA destination, and a comparison pricing section the
-// other landing pages don't have.
+// own copy and its own comparison pricing section the other landing pages
+// don't have.
+//
+// Post-CRO/CMO-review revision (Nov 2026, day before the event): no dollar
+// figures on the page at all, and every pricing CTA now opens a HubSpot
+// Meetings scheduler in a modal (East Apthorp's calendar, since Ryan isn't
+// set up in HubSpot yet) instead of linking out to the generic demo form.
 
-// Every CTA on this page points at the DevLearn HubSpot campaign (built by
-// Austin, portal 2593232). utm_content is swapped per button so PostHog and
-// HubSpot both show which spot on the page drove the click. Do not change
-// utm_campaign, utm_source, or utm_medium; they are tied to live reporting.
-function demoUrl(contentTag: string): string {
-  const params = [
-    ['utm_campaign', '58155337-DevLearn 2026'],
-    ['utm_source', 'Events'],
-    ['utm_medium', 'DevLearn2026'],
-    ['utm_content', contentTag],
-  ]
-  const qs = params.map(([k, v]) => `${k}=${encodeURIComponent(v)}`).join('&')
-  return `https://www.skillwell.com/demo?${qs}`
-}
+const MEETING_EMBED_SRC = 'https://meetings.hubspot.com/east-apthorp/skillwell-onboarding-devlearn?embed=true'
 
 function Arrow() {
   return (
@@ -37,15 +29,101 @@ function CheckIcon() {
   )
 }
 
-function TryButton({ contentTag, children, className = '' }: { contentTag: string; children: React.ReactNode; className?: string }) {
+function XIcon() {
   return (
-    <a
-      href={demoUrl(contentTag)}
-      onClick={() => trackDevLearnCTA(contentTag)}
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+      <path d="M6 6l12 12M18 6L6 18" />
+    </svg>
+  )
+}
+
+// The meetings-iframe-container div stays mounted in the DOM from first
+// render (just hidden with CSS), never conditionally unmounted. HubSpot's
+// embed script scans the DOM for that class once when it loads; if the div
+// came and went with the modal, only the very first open would ever work.
+// The script itself is only injected the first time the modal opens, so
+// visitors who never book never load a third-party script.
+function MeetingModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const scriptLoaded = useRef(false)
+
+  useEffect(() => {
+    if (!open || scriptLoaded.current) return
+    scriptLoaded.current = true
+    const script = document.createElement('script')
+    script.src = 'https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js'
+    script.async = true
+    document.body.appendChild(script)
+  }, [open])
+
+  useEffect(() => {
+    function onMessage(event: MessageEvent) {
+      if (event.data && event.data.meetingBookSucceeded) {
+        window.location.href = 'https://www.skillwell.com/'
+      }
+    }
+    window.addEventListener('message', onMessage)
+    return () => window.removeEventListener('message', onMessage)
+  }, [])
+
+  useEffect(() => {
+    if (!open) return
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') onClose()
+    }
+    document.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [open, onClose])
+
+  return (
+    <div
+      className={open ? 'fixed inset-0 z-50 flex items-center justify-center bg-ink/60 p-4' : 'hidden'}
+      onClick={onClose}
+      aria-hidden={!open}
+    >
+      <div
+        className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-[var(--shadow-overlay)]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute right-3 top-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-sunken text-ink transition-colors hover:bg-line-strong"
+        >
+          <XIcon />
+        </button>
+        <div className="meetings-iframe-container min-h-[480px] p-2 pt-12" data-src={MEETING_EMBED_SRC} />
+      </div>
+    </div>
+  )
+}
+
+function OpenMeetingButton({
+  contentTag,
+  onOpen,
+  children,
+  className = '',
+}: {
+  contentTag: string
+  onOpen: () => void
+  children: React.ReactNode
+  className?: string
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        trackDevLearnCTA(contentTag)
+        onOpen()
+      }}
       className={`flex items-center justify-center gap-2 rounded-btn bg-primary px-8 py-4 text-lg font-bold text-white shadow-[0_10px_26px_rgba(0,94,141,0.35)] transition-colors hover:bg-primary-hover ${className}`}
     >
       {children}
-    </a>
+    </button>
   )
 }
 
@@ -147,44 +225,15 @@ function OutcomeTile({ title, tagline, image, big = false }: { title: string; ta
   )
 }
 
-function OfferCta({ contentTag, label, note }: { contentTag: string; label: string; note: string }) {
-  const [agreed, setAgreed] = useState(false)
-  const id = `agree-${contentTag}`
-  return (
-    <div className="mt-6">
-      <label htmlFor={id} className="flex cursor-pointer items-start gap-2.5 text-left text-[13px] leading-snug text-ink-soft">
-        <input
-          id={id}
-          type="checkbox"
-          checked={agreed}
-          onChange={(e) => setAgreed(e.target.checked)}
-          className="mt-0.5 h-4 w-4 shrink-0 accent-primary"
-        />
-        <span>{note}</span>
-      </label>
-      <a
-        href={agreed ? demoUrl(contentTag) : undefined}
-        aria-disabled={!agreed}
-        onClick={(e) => {
-          if (!agreed) {
-            e.preventDefault()
-            return
-          }
-          trackDevLearnCTA(contentTag)
-        }}
-        className={`mt-3 flex items-center justify-center gap-2 rounded-btn px-5 py-3.5 text-[15px] font-bold transition-colors ${
-          agreed ? 'cursor-pointer bg-primary text-white hover:bg-primary-hover' : 'pointer-events-none cursor-not-allowed bg-sunken text-ink-muted'
-        }`}
-      >
-        {label} {agreed && <Arrow />}
-      </a>
-    </div>
-  )
-}
 
 export default function DevLearnPage() {
+  const [meetingOpen, setMeetingOpen] = useState(false)
+  const openMeeting = () => setMeetingOpen(true)
+
   return (
     <div className="min-h-screen bg-surface text-ink">
+      <MeetingModal open={meetingOpen} onClose={() => setMeetingOpen(false)} />
+
       {/* Header */}
       <header className="sticky top-0 z-20 border-b border-line bg-panel/85 backdrop-blur">
         <div className="mx-auto flex h-15 max-w-6xl items-center px-5 py-3">
@@ -297,7 +346,7 @@ export default function DevLearnPage() {
             Exclusive Pricing for DevLearn Attendees
           </h2>
           <p className="mt-3 max-w-[52ch] text-[15px] leading-relaxed text-ink-soft">
-            Two ways in. Save $3,000 a year if you commit now, or try it free for a month first.
+            Two ways in. Discounts in year one if you commit now, or try it free for a month first.
           </p>
 
           <div className="mt-10 grid gap-6 md:grid-cols-2">
@@ -305,12 +354,20 @@ export default function DevLearnPage() {
             <div className="flex flex-col rounded-2xl border border-line bg-panel p-7 shadow-[var(--shadow-card)]">
               <p className="text-sm font-bold text-primary">DevLearn Exclusive Offer</p>
               <h3 className="mt-2 font-display text-xl font-bold tracking-tight text-ink">Skillwell Starter Pack</h3>
-              <p className="mt-3 flex flex-wrap items-baseline gap-x-2">
-                <span className="text-lg font-semibold text-ink-muted line-through">$20,000</span>
-                <span className="text-4xl font-bold tracking-tight text-ink">$17,000</span>
-                <span className="text-sm font-semibold text-ink-muted">/ year</span>
-              </p>
-              <p className="mt-1 text-sm font-semibold text-success">Save $3,000 when you sign up now.</p>
+              <div className="mt-4 flex flex-col gap-2">
+                <p className="flex items-center gap-2 text-base font-bold text-ink">
+                  <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-success-soft text-success">
+                    <CheckIcon />
+                  </span>
+                  30% off your annual license fee
+                </p>
+                <p className="flex items-center gap-2 text-base font-bold text-ink">
+                  <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-success-soft text-success">
+                    <CheckIcon />
+                  </span>
+                  20 hours of free consulting
+                </p>
+              </div>
               <ul className="mt-6 flex flex-col gap-3">
                 {[
                   '500 minutes of conversational simulation',
@@ -327,12 +384,14 @@ export default function DevLearnPage() {
                   </li>
                 ))}
               </ul>
-              <div className="mt-auto">
-                <OfferCta
+              <div className="mt-auto pt-6">
+                <OpenMeetingButton
                   contentTag="starterpack"
-                  label="Start Your Onboarding"
-                  note="I understand this $17,000 rate is available on new annual agreements started by November 30, 2026, and the exact scope is confirmed on the call."
-                />
+                  onOpen={openMeeting}
+                  className="w-full px-5 py-3.5 text-[15px]"
+                >
+                  Start Your Onboarding <Arrow />
+                </OpenMeetingButton>
               </div>
             </div>
 
@@ -344,14 +403,13 @@ export default function DevLearnPage() {
                 <span className="text-4xl font-bold tracking-tight text-ink">$0</span>
                 <span className="text-sm font-semibold text-ink-muted">for your first month</span>
               </p>
-              <p className="mt-1 text-sm text-ink-muted">Then $20,000 a year if you continue.</p>
               <ul className="mt-6 flex flex-col gap-3">
                 {[
-                  '100 minutes of conversational simulation',
+                  '60 minutes of conversational simulation',
                   '1 branching simulation',
-                  'No adaptive course deployed yet',
-                  'No skills data reporting during the trial',
-                  'Full Starter Pack benefits once you continue as a paying customer',
+                  'Content ingestion for your courseware',
+                  'Optional adaptive course build',
+                  'Full Starter Pack benefits if you buy before December 31, 2026',
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2.5 text-[14.5px] text-ink-soft">
                     <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-sunken text-ink-muted">
@@ -361,18 +419,20 @@ export default function DevLearnPage() {
                   </li>
                 ))}
               </ul>
-              <div className="mt-auto">
-                <OfferCta
+              <div className="mt-auto pt-6">
+                <OpenMeetingButton
                   contentTag="trial"
-                  label="Start a free trial"
-                  note="I agree to Skillwell's trial terms: the trial runs one month free, and continuing after that is $20,000 a year, confirmed on the call."
-                />
+                  onOpen={openMeeting}
+                  className="w-full px-5 py-3.5 text-[15px]"
+                >
+                  Start a free trial <Arrow />
+                </OpenMeetingButton>
               </div>
             </div>
           </div>
 
           <p className="mt-6 text-sm text-ink-muted">
-            This is only available to new customers who sign up at DevLearn and start their trial by the end of November.
+            This is only available to new customers who sign up at DevLearn and commit by December 31, 2026.
           </p>
         </div>
       </section>
@@ -389,7 +449,9 @@ export default function DevLearnPage() {
             </p>
           </div>
           <div className="mt-8 flex justify-center">
-            <TryButton contentTag="final_cta">Start Your Onboarding <Arrow /></TryButton>
+            <OpenMeetingButton contentTag="final_cta" onOpen={openMeeting}>
+              Start Your Onboarding <Arrow />
+            </OpenMeetingButton>
           </div>
         </div>
       </section>
