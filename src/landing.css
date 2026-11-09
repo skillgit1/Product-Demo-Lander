@@ -37,23 +37,17 @@ html { scroll-behavior: smooth; }
   .he-logos { animation: none; }
 }
 
-/* Conversational sims comparison cards: a slow, subtle diagonal sheen across
-   the Skillwell side of each card, so the "winning" side of the comparison
-   reads as quietly alive rather than a flat fill. */
-@keyframes comparisonSheen {
-  from { background-position: 0% 50%; }
-  to { background-position: 200% 50%; }
+/* Conversational sims comparison table: each row is invisible until the
+   table has scrolled into view, then rises in with a stagger (delay set
+   per-row inline in JS) so the table has momentum without needing the rows
+   to be separate floating cards. */
+@keyframes compareRowRise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-.comparison-sheen::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.14) 40%, transparent 60%);
-  background-size: 250% 100%;
-  animation: comparisonSheen 7s linear infinite;
-  pointer-events: none;
-}
+.compare-row { opacity: 0; }
+.compare-row.is-visible { animation: compareRowRise 0.6s ease-out both; }
 
 @media (prefers-reduced-motion: reduce) {
-  .comparison-sheen::before { animation: none; }
+  .compare-row { opacity: 1; animation: none !important; }
 }

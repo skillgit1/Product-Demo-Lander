@@ -165,6 +165,67 @@ function WhyItem({ n, title, children }: { n: number; title: string; children: R
   )
 }
 
+function CompareTable() {
+  const [ref, visible] = useReveal<HTMLDivElement>()
+  return (
+    <section className="bg-sand py-12 sm:py-16">
+      <div className="mx-auto max-w-4xl px-5">
+        <h2 className="text-center font-display text-[clamp(24px,3vw,34px)] font-bold tracking-tight text-ink text-balance">
+          How Skillwell Compares
+        </h2>
+        <p className="mx-auto mt-3 max-w-[48ch] text-center text-[15px] text-ink-soft">
+          Six ways Skillwell is built differently from the rest of the category.
+        </p>
+
+        <div
+          ref={ref}
+          className={`mt-10 overflow-hidden rounded-2xl border border-line shadow-[var(--shadow-card)] transition-all duration-700 ease-out ${visible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+        >
+          {/* Only the data columns scroll on a phone; the claim stays pinned
+              on the left so you always know which row you're reading. */}
+          <div style={{ overflowX: 'auto' }}>
+            <table className="w-full border-collapse text-left text-sm" style={{ minWidth: 640 }}>
+              <thead>
+                <tr>
+                  <th className="sticky left-0 z-10 w-36 bg-panel p-4 sm:w-56" />
+                  {COMPARE_COLUMNS.map((c, i) => (
+                    <th
+                      key={c}
+                      className={`p-4 text-center text-sm font-bold ${i === 0 ? 'bg-gradient-to-br from-navy to-primary text-white' : 'bg-panel text-ink-soft'}`}
+                    >
+                      {c}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {COMPARE_ROWS.map((row, ri) => (
+                  <tr
+                    key={row.label}
+                    className={`compare-row border-t border-line ${visible ? 'is-visible' : ''}`}
+                    style={{ animationDelay: `${ri * 80}ms` }}
+                  >
+                    <td className="sticky left-0 z-10 w-36 bg-panel p-4 text-[13px] font-semibold leading-snug text-ink sm:w-56 sm:text-sm">
+                      {row.label}
+                    </td>
+                    {row.values.map((v, i) => (
+                      <td key={i} className={`p-4 text-center ${i === 0 ? 'bg-primary-soft/50' : 'bg-panel'}`}>
+                        <span className="inline-flex items-center justify-center">
+                          <Cell value={v} />
+                        </span>
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function Testimonial({ quote, name, title, logo }: { quote: string; name: string; title: string; logo: string }) {
   return (
     <Reveal className="mt-6 rounded-2xl border border-line bg-panel p-6 shadow-[var(--shadow-card)]">
@@ -290,51 +351,12 @@ export default function ConversationalSimsPage() {
         </div>
       </section>
 
-      {/* How Skillwell Compares: a reveal-on-scroll stack of comparison
-          cards instead of a table, so there's nothing to scroll sideways
-          on a phone and the page has a sense of momentum as you move
-          through each claim. */}
-      <section className="bg-sand py-12 sm:py-16">
-        <div className="mx-auto max-w-4xl px-5">
-          <h2 className="text-center font-display text-[clamp(24px,3vw,34px)] font-bold tracking-tight text-ink text-balance">
-            How Skillwell Compares
-          </h2>
-          <p className="mx-auto mt-3 max-w-[48ch] text-center text-[15px] text-ink-soft">
-            Six ways Skillwell is built differently from the rest of the category.
-          </p>
-
-          <div className="mt-10 flex flex-col gap-4">
-            {COMPARE_ROWS.map((row, ri) => (
-              <Reveal key={row.label} delay={ri * 90}>
-                <div className="group overflow-hidden rounded-2xl border border-line bg-panel shadow-[var(--shadow-card)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_44px_rgba(16,41,46,0.16)] sm:flex sm:items-stretch">
-                  {/* Skillwell side: the claim, as a solid confirmed statement */}
-                  <div className="comparison-sheen relative overflow-hidden bg-gradient-to-br from-navy to-primary p-5 sm:w-[46%] sm:p-6">
-                    <div className="flex items-start gap-3">
-                      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-white/15 text-white ring-1 ring-white/25 transition-transform duration-500 group-hover:scale-110">
-                        <CheckIcon />
-                      </span>
-                      <div>
-                        <p className="text-[11px] font-bold uppercase tracking-wide text-white/60">Skillwell</p>
-                        <p className="mt-0.5 text-[15px] font-bold leading-snug text-white">{row.label}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Everyone else: muted, smaller, clearly the comparison set */}
-                  <div className="grid grid-cols-1 gap-px bg-line sm:w-[54%] sm:grid-cols-3">
-                    {row.values.slice(1).map((v, i) => (
-                      <div key={i} className="flex items-center justify-between gap-3 bg-panel p-4 sm:flex-col sm:items-start sm:justify-start sm:gap-2">
-                        <span className="text-xs font-semibold text-ink-muted">{COMPARE_COLUMNS[i + 1]}</span>
-                        <Cell value={v} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* How Skillwell Compares: a real table (aligned columns, scannable
+          down as well as across), not a stack of disconnected cards. The
+          first column stays pinned while the rest scrolls horizontally on a
+          phone, and rows rise in with a stagger the first time the table
+          comes into view. */}
+      <CompareTable />
 
       {/* Part of the Skillwell Platform */}
       <section className="bg-navy py-12 sm:py-16 text-white">
