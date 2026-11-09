@@ -119,7 +119,7 @@ const PLATFORM_PILLARS = [
     accent: 'var(--color-oasis)',
   },
   {
-    title: 'Skills taxonomy',
+    title: 'Skills Data',
     body: 'One shared framework every simulation, course, and report gets scored against.',
     accent: 'var(--color-lime)',
   },
@@ -150,17 +150,20 @@ const WHY_COLORS = ['var(--color-oasis)', 'var(--color-sky)', 'var(--color-lime)
 function WhyItem({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
   const color = WHY_COLORS[(n - 1) % WHY_COLORS.length]
   return (
-    <Reveal delay={(n - 1) * 100} className="flex items-start gap-4 sm:gap-5">
-      <span
-        className="grid h-10 w-10 shrink-0 place-items-center rounded-full font-display text-base font-bold text-navy-deep shadow-[0_6px_16px_rgba(16,41,46,0.18)] sm:h-12 sm:w-12 sm:text-lg"
-        style={{ backgroundColor: color }}
-      >
-        {n}
-      </span>
-      <div className="min-w-0 flex-1">
+    <Reveal delay={(n - 1) * 100}>
+      {/* Badge + heading only, not the body or the testimonial, so those
+          can run the full width of the section instead of being squeezed
+          into the column next to the number badge on a phone. */}
+      <div className="flex items-center gap-4 sm:gap-5">
+        <span
+          className="grid h-10 w-10 shrink-0 place-items-center rounded-full font-display text-base font-bold text-navy-deep shadow-[0_6px_16px_rgba(16,41,46,0.18)] sm:h-12 sm:w-12 sm:text-lg"
+          style={{ backgroundColor: color }}
+        >
+          {n}
+        </span>
         <h3 className="font-display text-lg font-bold tracking-tight text-ink sm:text-xl">{title}</h3>
-        {children}
       </div>
+      <div className="mt-3">{children}</div>
     </Reveal>
   )
 }
@@ -239,6 +242,14 @@ function Testimonial({ quote, name, title, logo }: { quote: string; name: string
 }
 
 export default function ConversationalSimsPage() {
+  useEffect(() => {
+    if (document.querySelector('script[src*="player.vimeo.com/api/player.js"]')) return
+    const script = document.createElement('script')
+    script.src = 'https://player.vimeo.com/api/player.js'
+    script.async = true
+    document.body.appendChild(script)
+  }, [])
+
   return (
     <div className="min-h-screen bg-surface text-ink">
       {/* Header */}
@@ -301,12 +312,16 @@ export default function ConversationalSimsPage() {
               Watch a learner talk through a high-stakes moment with an AI avatar while Skillwell tracks each decision point, maps it to a competency, and adapts what comes next.
             </p>
           </div>
-          <div className="mx-auto mt-8 max-w-3xl overflow-hidden rounded-2xl border border-line bg-navy-deep shadow-[var(--shadow-card)]">
-            <img src="/devlearn/capability-conversational.jpg" alt="A learner in a Skillwell conversational simulation" className="aspect-video w-full object-cover" />
+          <div className="mx-auto mt-8 aspect-[4/3] max-w-3xl overflow-hidden rounded-2xl border border-line bg-navy-deep shadow-[var(--shadow-card)]">
+            <iframe
+              src="https://player.vimeo.com/video/1245203371?h=390e7f14cb&badge=0&autopause=0&player_id=0&app_id=58479"
+              className="h-full w-full"
+              frameBorder={0}
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              title="Conversational Sims"
+            />
           </div>
-          <p className="mx-auto mt-3 max-w-3xl text-center text-sm text-ink-muted">
-            Placeholder image. Swap in the 60 to 90 second recorded demo when it's ready.
-          </p>
         </div>
       </section>
 
@@ -391,7 +406,7 @@ export default function ConversationalSimsPage() {
           </p>
 
           <p className="mx-auto mt-6 max-w-[36ch] font-display text-xl font-bold leading-snug tracking-tight text-balance sm:text-2xl">
-            You're not adding another point tool. You're adding another way to <span style={{ color: 'var(--color-oasis)' }}>prove skill</span>.
+            You're not adding another point tool. You're adding another way to <span style={{ color: 'var(--color-oasis)' }}>prove skills</span>.
           </p>
 
           <div className="mt-8">
