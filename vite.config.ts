@@ -15,9 +15,10 @@ export default defineConfig({
   optimizeDeps: { include: ['react', 'react-dom', 'react/jsx-runtime'] },
   // Multi-page build: the main landing page at the site root, plus the
   // vertical pages at /he/ (higher ed), /cbe/ (CBE / Direct Assessment),
-  // /devlearn/ (DevLearn 2026 event-exclusive pricing page), and
+  // /devlearn/ (DevLearn 2026 event-exclusive pricing page),
   // /conversational-sims/ (product page for the conversational sims launch,
-  // temporary standalone home until it moves onto skillwell.com proper).
+  // temporary standalone home until it moves onto skillwell.com proper), and
+  // /learning-portfolio-beta/ (Skillwell Verify skills report design rebuild).
   build: {
     rollupOptions: {
       input: {
@@ -26,6 +27,7 @@ export default defineConfig({
         cbe: resolve(root, 'cbe/index.html'),
         devlearn: resolve(root, 'devlearn/index.html'),
         conversationalSims: resolve(root, 'conversational-sims/index.html'),
+        learningPortfolioBeta: resolve(root, 'learning-portfolio-beta/index.html'),
       },
     },
   },
