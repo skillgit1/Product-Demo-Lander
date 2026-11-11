@@ -7,20 +7,12 @@ a:hover { color: #0E4854; }
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(
+  background: repeating-linear-gradient(
     90deg,
-    transparent calc(25% - 1px),
-    rgba(14, 72, 84, .18) calc(25% - 1px),
-    rgba(14, 72, 84, .18) 25%,
-    transparent 25%,
-    transparent calc(50% - 1px),
-    rgba(14, 72, 84, .18) calc(50% - 1px),
-    rgba(14, 72, 84, .18) 50%,
-    transparent 50%,
-    transparent calc(75% - 1px),
-    rgba(14, 72, 84, .18) calc(75% - 1px),
-    rgba(14, 72, 84, .18) 75%,
-    transparent 75%
+    transparent 0,
+    transparent calc(20% - 1px),
+    rgba(14, 72, 84, .18) calc(20% - 1px),
+    rgba(14, 72, 84, .18) 20%
   );
 }
 .sw-fill { height: 100%; border-radius: 7px; }

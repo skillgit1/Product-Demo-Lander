@@ -27,9 +27,9 @@ const COMPETENCIES: CompetencyRaw[] = [
     desc: 'Builds the self-awareness, learning habits and professional networks that keep a career moving. Skillwell tracks how learners set goals, act on feedback and seek out new opportunities, turning growth into evidence they can share.',
     courses: ['Career Mapping Lab', 'Networking in Practice'],
     dims: [
-      ['Awareness of Strengths and Challenges', 'Shows awareness of own strengths and areas for development', 2.8, 1.8],
-      ['Professional Development', 'Seeks and embraces development opportunities', 3.0, 2.2],
-      ['Networking', 'Builds relationships with people who can help one professionally', 3.2, 2.0],
+      ['Awareness of Strengths and Challenges', 'Shows awareness of own strengths and areas for development', 7.0, 4.5],
+      ['Professional Development', 'Seeks and embraces development opportunities', 7.5, 5.5],
+      ['Networking', 'Builds relationships with people who can help one professionally', 8.0, 5.0],
     ],
   },
   {
@@ -37,9 +37,9 @@ const COMPETENCIES: CompetencyRaw[] = [
     desc: 'Shares ideas, information and perspectives clearly with any audience. Course projects and simulations measure how learners write, present, listen and ask for guidance in real workplace scenarios.',
     courses: ['Business Communication Essentials', 'Presenting with Impact'],
     dims: [
-      ['Verbal and Written Communication', 'Communicates in a clear and organized manner', 3.5, 2.6],
-      ['Active Listening', 'Employs active listening, persuasion and influencing skills', 3.4, 2.4],
-      ['Asking for Guidance', 'Asks appropriate questions and informs others when needing guidance', 3.3, 2.8],
+      ['Verbal and Written Communication', 'Communicates in a clear and organized manner', 8.8, 6.5],
+      ['Active Listening', 'Employs active listening, persuasion and influencing skills', 8.5, 6.0],
+      ['Asking for Guidance', 'Asks appropriate questions and informs others when needing guidance', 8.3, 7.0],
     ],
   },
   {
@@ -47,9 +47,9 @@ const COMPETENCIES: CompetencyRaw[] = [
     desc: 'Analyzes information in context to solve problems and make sound decisions. Adaptive scenarios adjust to each learner’s performance, measuring how they gather evidence, weigh options and prioritize next steps.',
     courses: ['Problem Solving Simulations', 'Data Literacy Foundations'],
     dims: [
-      ['Problem Solving', 'Makes decisions using sound, inclusive reasoning and judgment', 3.6, 2.5],
-      ['Information Analysis', 'Gathers and analyzes information from diverse sources', 3.5, 2.2],
-      ['Prioritization', 'Anticipates needs and prioritizes action steps', 3.4, 2.6],
+      ['Problem Solving', 'Makes decisions using sound, inclusive reasoning and judgment', 9.0, 6.3],
+      ['Information Analysis', 'Gathers and analyzes information from diverse sources', 8.8, 5.5],
+      ['Prioritization', 'Anticipates needs and prioritizes action steps', 8.5, 6.5],
     ],
   },
   {
@@ -57,9 +57,9 @@ const COMPETENCIES: CompetencyRaw[] = [
     desc: 'Engages and includes people from different cultures and backgrounds. Learners demonstrate how they seek out diverse perspectives, adapt to new environments and contribute to fair, inclusive teams.',
     courses: ['Inclusive Workplaces'],
     dims: [
-      ['Inclusive Decision-Making', 'Uses feedback from multiple perspectives to make decisions', 3.0, 2.6],
-      ['Openness to Diverse Ideas', 'Keeps an open mind to new ways of thinking', 3.3, 3.0],
-      ['Adaptability', 'Adapts to diverse environments', 3.0, 2.4],
+      ['Inclusive Decision-Making', 'Uses feedback from multiple perspectives to make decisions', 7.5, 6.5],
+      ['Openness to Diverse Ideas', 'Keeps an open mind to new ways of thinking', 8.3, 7.5],
+      ['Adaptability', 'Adapts to diverse environments', 7.5, 6.0],
     ],
   },
   {
@@ -67,9 +67,9 @@ const COMPETENCIES: CompetencyRaw[] = [
     desc: 'Recognizes and builds on personal and team strengths to reach shared goals. Learners show how they motivate others, think creatively and manage projects from plan to delivery.',
     courses: ['Leading Small Teams', 'Presenting with Impact'],
     dims: [
-      ['Motivating Others', 'Inspires and encourages others, building mutual trust', 2.8, 2.4],
-      ['Innovative Thinking', 'Goes beyond traditional methods', 3.0, 2.0],
-      ['Project Management', 'Plans, initiates, manages and evaluates projects', 2.9, 1.9],
+      ['Motivating Others', 'Inspires and encourages others, building mutual trust', 7.0, 6.0],
+      ['Innovative Thinking', 'Goes beyond traditional methods', 7.5, 5.0],
+      ['Project Management', 'Plans, initiates, manages and evaluates projects', 7.3, 4.8],
     ],
   },
   {
@@ -77,9 +77,9 @@ const COMPETENCIES: CompetencyRaw[] = [
     desc: 'Demonstrates the work habits every workplace counts on. Skillwell measures dependability, attention to detail and accountability across every assignment, giving employers a clear view of consistency over time.',
     courses: ['Workplace Foundations', 'Career Mapping Lab'],
     dims: [
-      ['Dependability', 'Is present, prepared and consistent', 3.8, 3.2],
-      ['Attention to Detail', 'Produces work with few if any errors', 3.6, 2.8],
-      ['Integrity and Accountability', 'Acts with integrity toward self, others and the organization', 3.7, 3.3],
+      ['Dependability', 'Is present, prepared and consistent', 9.5, 8.0],
+      ['Attention to Detail', 'Produces work with few if any errors', 9.0, 7.0],
+      ['Integrity and Accountability', 'Acts with integrity toward self, others and the organization', 9.3, 8.3],
     ],
   },
   {
@@ -87,9 +87,9 @@ const COMPETENCIES: CompetencyRaw[] = [
     desc: 'Builds collaborative relationships that move shared work forward. Group projects and peer reviews capture how learners collaborate, resolve conflict and own their part of the outcome.',
     courses: ['Leading Small Teams', 'Problem Solving Simulations'],
     dims: [
-      ['Collaboration', 'Works with others to achieve common goals', 3.7, 2.9],
-      ['Conflict Management', 'Manages conflict and meets ambiguity with resilience', 3.4, 2.2],
-      ['Shared Accountability', 'Owns individual and team deliverables', 3.7, 2.8],
+      ['Collaboration', 'Works with others to achieve common goals', 9.3, 7.3],
+      ['Conflict Management', 'Manages conflict and meets ambiguity with resilience', 8.5, 5.5],
+      ['Shared Accountability', 'Owns individual and team deliverables', 9.3, 7.0],
     ],
   },
   {
@@ -97,9 +97,9 @@ const COMPETENCIES: CompetencyRaw[] = [
     desc: 'Uses technology effectively and responsibly to work smarter and reach goals. Learners show how quickly they adopt new tools and use data to make timely, informed decisions.',
     courses: ['Data Literacy Foundations'],
     dims: [
-      ['Learning New Tools', 'Quickly adapts to new or unfamiliar technologies', 3.4, 2.4],
-      ['Productivity with Technology', 'Uses technology to improve efficiency', 3.1, 2.5],
-      ['Data-Informed Decisions', 'Integrates information to support timely decisions', 3.1, 2.0],
+      ['Learning New Tools', 'Quickly adapts to new or unfamiliar technologies', 8.5, 6.0],
+      ['Productivity with Technology', 'Uses technology to improve efficiency', 7.8, 6.3],
+      ['Data-Informed Decisions', 'Integrates information to support timely decisions', 7.8, 5.0],
     ],
   },
 ]
@@ -122,13 +122,13 @@ const ICON_PATHS: Record<number, string> = {
   8: '<rect x="4" y="5" width="16" height="11" rx="1"></rect><path d="M2 19h20"></path>',
 }
 
-function pct(n: number) { return (n / 4 * 100).toFixed(1) + '%' }
+function pct(n: number) { return (n / 10 * 100).toFixed(1) + '%' }
 function fmt(n: number) { return n.toFixed(1) }
 function r1(n: number) { return Math.round(n * 10) / 10 }
 function sign(n: number) { return (n > 0 ? '+' : n < 0 ? '−' : '') + Math.abs(n).toFixed(1) }
 function avg(xs: number[]) { return xs.reduce((a, b) => a + b, 0) / xs.length }
 function level(n: number) {
-  return n >= 4 ? 'Advanced Application' : n >= 3 ? 'Early Application' : n >= 2 ? 'Comprehension' : 'Emerging Knowledge'
+  return n >= 8 ? 'Advanced Application' : n >= 6 ? 'Early Application' : n >= 4 ? 'Comprehension' : 'Emerging Knowledge'
 }
 
 function progressRow(fillColor: string, pctVal: string, trackHeight: number, radius: number, valueStyle: string, value: string, label: string) {
@@ -261,10 +261,17 @@ function renderReport(state: EngineState): string {
       <path d="M450 380 C 490 300, 560 250, 640 235" stroke="#AFCB37" stroke-width="28" fill="none" stroke-linecap="round"></path>
     </svg>
     <div style="position: relative; max-width: 1240px; margin: 0 auto; padding: 48px 32px 56px; display: flex; flex-wrap: wrap; align-items: center; gap: 24px">
-      <div style="width: 88px; height: 88px; border-radius: 50%; background: #BDE4F9; color: #0E4854; display: flex; align-items: center; justify-content: center; flex: none"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0E4854" stroke-width="1.8" stroke-linecap="round" role="img" aria-label="Learner photo placeholder"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"></path></svg></div>
+      <div style="width: 88px; height: 88px; border-radius: 50%; background: #BDE4F9; color: #0E4854; display: flex; align-items: center; justify-content: center; flex: none; overflow: hidden; border: 3px solid #FFFFFF; box-sizing: border-box"><svg width="88" height="88" viewBox="0 0 88 88" role="img" aria-label="Illustrated portrait of Maya Alvarez"><rect width="88" height="88" fill="#BDE4F9"></rect><path d="M22 44 C 20 24, 32 14, 45 14 C 58 14, 68 24, 66 44 C 66 56, 64 64, 60 70 L 28 70 C 24 64, 22 56, 22 44 Z" fill="#2B1D16"></path><path d="M12 92 C 13 74, 27 65, 44 65 C 61 65, 75 74, 76 92 Z" fill="#0E4854"></path><path d="M36 65 L 44 76 L 52 65 Z" fill="#FFFFFF"></path><rect x="38" y="52" width="12" height="14" rx="5" fill="#94603F"></rect><ellipse cx="44" cy="41" rx="14" ry="17" fill="#A8714E"></ellipse><path d="M29 40 C 28 24, 38 19, 46 20 C 55 21, 61 28, 59 40 C 55 32, 50 28, 43 28 C 37 29, 32 33, 29 40 Z" fill="#2B1D16"></path><circle cx="30" cy="46" r="2" fill="#00BF80"></circle><circle cx="58" cy="46" r="2" fill="#00BF80"></circle><path d="M36 37 Q 39 35.5 42 37" stroke="#2B1D16" stroke-width="1.6" fill="none" stroke-linecap="round"></path><path d="M46 37 Q 49 35.5 52 37" stroke="#2B1D16" stroke-width="1.6" fill="none" stroke-linecap="round"></path><circle cx="39" cy="41" r="1.6" fill="#2B1D16"></circle><circle cx="49" cy="41" r="1.6" fill="#2B1D16"></circle><path d="M39.5 49 Q 44 53 48.5 49" stroke="#2B1D16" stroke-width="1.6" fill="none" stroke-linecap="round"></path></svg></div>
       <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1 1 420px">
         <p style="margin: 0; font-size: 15px; letter-spacing: 0.4px; color: #BDE4F9">Verified Skills Growth Report · Before and After Skillwell</p>
-        <h1 style="margin: 0; font-family: 'Lora', 'Cambria', serif; font-weight: 700; font-size: 48px; line-height: 1.1">[Learner Name]</h1>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px">
+          <h1 style="margin: 0; font-family: 'Lora', 'Cambria', serif; font-weight: 700; font-size: 48px; line-height: 1.1; padding-right: 15px">Maya Alvarez</h1>
+          <span aria-hidden="true" style="width: 2px; height: 36px; border-radius: 1px; background: #BDE4F9; flex: none"></span>
+          <span style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 999px; color: #bde4f9; font-size: 15px; background-color: transparent; width: 247px; height: 30px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M9 7V5h6v2"></path><path d="M3 12h18"></path></svg>
+            <span style="font-size: 24px; font-family: &quot;Krub&quot;; font-weight: 700">Business Associate</span>
+          </span>
+        </div>
         <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px">
           <span style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: #AFCB37; color: #0E4854; font-weight: 700; font-size: 14px">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l4 4 10-10"></path></svg>
@@ -294,14 +301,14 @@ function renderReport(state: EngineState): string {
           <div style="background: #FFFFFF; color: #0E4854; border: 3px solid #00BF80; border-radius: 16px; padding: 24px 16px; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center">
             <span style="font-size: 13px; font-weight: 600; letter-spacing: 0.3px">BEFORE</span>
             <span style="font-family: 'Lora', 'Cambria', serif; font-weight: 700; font-size: 72px; line-height: 1">${fmt(oS)}</span>
-            <span style="font-size: 14px">out of 4</span>
+            <span style="font-size: 14px">out of 10</span>
             <span style="font-weight: 700; font-size: 17px">Starting Self-Assessment</span>
             <span style="font-size: 13px">Taken 08/04/2026</span>
           </div>
           <div style="background: #0E4854; color: #FFFFFF; border-radius: 16px; padding: 24px 16px; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center">
             <span style="font-size: 13px; font-weight: 600; letter-spacing: 0.3px; color: #BDE4F9">AFTER</span>
             <span style="font-family: 'Lora', 'Cambria', serif; font-weight: 700; font-size: 72px; line-height: 1">${fmt(oV)}</span>
-            <span style="font-size: 14px; color: #BDE4F9">out of 4</span>
+            <span style="font-size: 14px; color: #BDE4F9">out of 10</span>
             <span style="font-weight: 700; font-size: 17px; display: inline-flex; align-items: center; gap: 6px">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00BF80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l4 4 10-10"></path></svg>
               Verified Score
@@ -362,11 +369,11 @@ function renderReport(state: EngineState): string {
         <span style="display: inline-flex; align-items: center; gap: 8px"><span style="width: 22px; height: 10px; border-radius: 5px; background: #0E4854"></span>Verified: after course completion</span>
       </div>
       <div class="sw-scale" style="flex: 1.25 1 480px; display: grid; grid-template-columns: minmax(0, 1fr) 132px; gap: 16px">
-        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
-          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; text-align: right; font-size: 13px; font-weight: 600; width: 142px"><span>Emerging Knowledge</span><span style="width: 26px; height: 26px; border-radius: 50%; border: 2px solid #0E4854; display: flex; align-items: center; justify-content: center; font-size: 13px">1</span></div>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; text-align: right; font-size: 13px; font-weight: 600"><span>Comprehension</span><span style="width: 26px; height: 26px; border-radius: 50%; border: 2px solid #0E4854; display: flex; align-items: center; justify-content: center; font-size: 13px">2</span></div>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; text-align: right; font-size: 13px; font-weight: 600"><span>Early Application&nbsp;&nbsp;</span><span style="width: 26px; height: 26px; border-radius: 50%; border: 2px solid rgb(14, 72, 84); display: flex; align-items: center; justify-content: center; font-size: 13px">3</span></div>
-          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; text-align: right; font-size: 13px; font-weight: 600; width: 141px"><span>Advanced Application</span><span style="width: 26px; height: 26px; border-radius: 50%; border: 2px solid #0E4854; display: flex; align-items: center; justify-content: center; font-size: 13px">4</span></div>
+        <div style="display: grid; grid-template-columns: 4fr 2fr 2fr 2fr">
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px; text-align: right; font-size: 13px; font-weight: 600"><span>Emerging Knowledge</span><span style="font-weight: 400">0–3.9</span></div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px; text-align: right; font-size: 13px; font-weight: 600"><span>Comprehension</span><span style="font-weight: 400">4–5.9</span></div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px; text-align: right; font-size: 13px; font-weight: 600"><span>Early Application</span><span style="font-weight: 400">6–7.9</span></div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px; text-align: right; font-size: 13px; font-weight: 600"><span>Advanced Application</span><span style="font-weight: 400">8–10</span></div>
         </div>
         <div></div>
       </div>
@@ -416,7 +423,7 @@ function renderReport(state: EngineState): string {
     <section style="background: #0E4854; color: #FFFFFF; border-radius: 20px; padding: 32px 28px; display: flex; flex-wrap: wrap; gap: 24px; align-items: center; justify-content: space-between">
       <div style="flex: 1 1 420px; display: flex; flex-direction: column; gap: 8px">
         <h2 style="margin: 0; font-family: 'Lora', 'Cambria', serif; font-size: 26px; font-weight: 700">How this report is verified</h2>
-        <p style="margin: 0; font-size: 16px; line-height: 1.6">Every learner starts with a self-assessment before their first course. As they complete coursework, Skillwell verifies their skills through instructor-graded projects, adaptive simulations and reviewed practice, scored on the same four-level scale from Emerging Knowledge to Advanced Application. The result is a clear before-and-after view: verified proof of growth for learners, and immediate insight for faculty and employers.</p>
+        <p style="margin: 0; font-size: 16px; line-height: 1.6">Every learner starts with a self-assessment before their first course. As they complete coursework, Skillwell verifies their skills through instructor-graded projects, adaptive simulations and reviewed practice, scored on the same 10-point scale, grouped into four levels from Emerging Knowledge to Advanced Application. The result is a clear before-and-after view: verified proof of growth for learners, and immediate insight for faculty and employers.</p>
       </div>
       <div style="display: flex; flex-direction: column; gap: 6px; padding: 18px 22px; border-radius: 14px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); width: 349px"><span style="font-size: 13px; color: rgb(189, 228, 249)">Confirm this credential at</span>
         <span style="font-weight: 700; font-size: 16px">[verification URL]&nbsp;</span>
