@@ -209,7 +209,7 @@ function ScoreTrack({
   marker?: { pct: number; label: string }
 }) {
   return (
-    <div className="relative mt-6 h-2 rounded-full bg-sunken">
+    <div className={`relative mt-7 h-2 rounded-full bg-sunken ${marker ? 'mb-7' : ''}`}>
       <div className="h-full rounded-full transition-all duration-700" style={{ width: `${pct}%`, backgroundColor: fillColor }} />
       <span
         className="absolute -top-7 -translate-x-1/2 whitespace-nowrap rounded-full border border-line bg-panel px-2 py-0.5 text-xs font-bold text-ink shadow-[var(--shadow-card)]"
@@ -223,8 +223,11 @@ function ScoreTrack({
             className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-panel bg-success"
             style={{ left: `${marker.pct}%` }}
           />
+          {/* Below the track, not above: the score badge already lives above,
+              and the two can sit close enough in percentage terms to
+              overlap if both float on the same side. */}
           <span
-            className="absolute -top-7 -translate-x-1/2 whitespace-nowrap rounded-full bg-success-soft px-2 py-0.5 text-[11px] font-semibold text-success"
+            className="absolute top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-full bg-success-soft px-2 py-0.5 text-[11px] font-semibold text-success"
             style={{ left: `${marker.pct}%` }}
           >
             {marker.label}
@@ -283,7 +286,7 @@ function OutcomeReportCard() {
 
         {/* Side by side from sm up so the panel doesn't run so tall; a
             single column on a phone, where there isn't width to spare. */}
-        <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-[1fr_1.3fr] sm:gap-8">
+        <div className="mt-6 grid grid-cols-1 items-start gap-6 sm:grid-cols-[1fr_1.3fr] sm:gap-8">
           <div className="rounded-lg bg-panel p-5 shadow-[var(--shadow-card)]">
             <ScoreTrack pct={OVERALL_SCORE} fillColor="var(--color-warning)" marker={{ pct: PASS_LEVEL, label: `Pass level ${PASS_LEVEL}%` }} />
             <p className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-ink">
