@@ -58,7 +58,6 @@ function Reveal({ children, delay = 0, className = '' }: { children: React.React
 // Decoded from the Google Docs redirect link in the brief.
 const LIVE_AVATAR_EMBED = 'https://embed.liveavatar.com/v1/5bfe1511-f76d-4765-9530-3fa69d6e54f0?orientation=horizontal'
 const DEMO_URL = 'https://www.skillwell.com/demo'
-const PLATFORM_URL = 'https://www.skillwell.com/platform'
 
 function Arrow() {
   return (
@@ -121,16 +120,256 @@ const PLATFORM_PILLARS = [
   {
     title: 'Skills Data',
     body: 'One shared framework every simulation, course, and report gets scored against.',
+    image: '/devlearn/capability-adaptive.jpg',
     accent: 'var(--color-lime)',
   },
 ] as const
 
-function TagIcon() {
+function InfoIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
-      <path d="M12 2 2 12l9 9 11-11V3z" />
-      <circle cx="16.5" cy="7.5" r="1.5" fill="currentColor" stroke="none" />
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 11v5M12 8v.01" />
     </svg>
+  )
+}
+
+function MinusCircleIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M8 12h8" />
+    </svg>
+  )
+}
+
+function TriangleIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-3 w-3">
+      <path d="M12 3 22 20H2z" />
+    </svg>
+  )
+}
+
+// ---- Outcome Report: a faithful recreation of the real product screen,
+// not a screenshot, so it's crisp at any size and themed with our own
+// tokens. Content (scores, feedback, transcript) is a real sample report
+// Austin supplied, trimmed for nothing — it's the proof this section exists
+// to show.
+const OUTCOME_SCENARIO = 'MVP Demo: Pricing negotiation with a skeptical executive'
+const OVERALL_SCORE = 50
+const PASS_LEVEL = 70
+
+const SKILL_BARS = [
+  { label: 'Value articulation', pct: 52 },
+  { label: 'Negotiation', pct: 44 },
+  { label: 'Objection handling', pct: 55 },
+  { label: 'Composure', pct: 48 },
+]
+
+const COACH_FEEDBACK = [
+  "Your value articulation stayed surface-level. Mentioning a senior account executive and a personalized build-out is a start, but you need to anchor those points to measurable outcomes (time saved, error rates, ROI) so the buyer can see the tangible difference from competitors.",
+  "You were interrupted and struggled to complete your thoughts, which allowed the conversation to drift away from your core message. Practice delivering your key value points in short, complete sentences so interruptions don't derail them.",
+  "When the objection about competitors offering the same thing at a lower price arose, you responded with process details rather than directly addressing the risk of repeating a painful past experience. Lead with the buyer's pain point before describing your solution.",
+  "Your composure visibly wavered when you were cut off, resulting in fragmented responses. Build a habit of pausing briefly and restarting calmly with a clear, confident opener to signal that you're in control of the conversation.",
+  "There was no attempt to explore the buyer's priorities, budget flexibility, or decision criteria, which are essential levers in a negotiation. Ask targeted questions to understand what trade-offs the buyer is willing to consider before defending your price.",
+]
+
+type Turn =
+  | { speaker: 'buyer' | 'learner'; text: string }
+  | { speaker: 'note'; level: 'partial' | 'incorrect'; skill: string; text: string }
+
+const TRANSCRIPT: Turn[] = [
+  {
+    speaker: 'buyer',
+    text: "Look, I've got your revised proposal up here, and the number is still the number. I'm not seeing anything that explains why we should be paying a premium when two other vendors are sitting in the same ballpark for what looks like the same thing. So help me understand what I'm actually getting for the",
+  },
+  { speaker: 'learner', text: 'premium.' },
+  { speaker: 'note', level: 'partial', skill: 'Composure', text: "Repeating the avatar's word back is a fair start, but follow it with a calm, complete answer rather than a fragment." },
+  { speaker: 'learner', text: 'Okay.' },
+  { speaker: 'buyer', text: 'Yeah, premium.' },
+  { speaker: 'learner', text: "Yeah, you're getting" },
+  { speaker: 'note', level: 'incorrect', skill: 'Value articulation', text: 'The sentence trails off before naming any concrete value, so state the specific benefit you deliver in one clear line.' },
+  { speaker: 'buyer', text: 'Hold' },
+  { speaker: 'learner', text: 'the' },
+  {
+    speaker: 'buyer',
+    text: 'If you\'re about to tell me "enterprise features," I\'ve heard that. What I need is simple: what\'s the measurable outcome you\'re confident we\'ll get, and how does your implementation avoid the kind of mess we had two years ago?',
+  },
+  {
+    speaker: 'learner',
+    text: "Yeah, you're going to be working with a senior account executive on your implementation. So I think the primary differentiator is going to be the",
+  },
+  { speaker: 'note', level: 'partial', skill: 'Objection handling', text: "You moved toward the implementation concern, but you didn't name the measurable outcome the buyer asked for; lead with that number or result first." },
+  {
+    speaker: 'learner',
+    text: "personalized build-out that you're going to get in those first 3 months of working with us to ensure that mistakes don't happen. You actually get the result that you haven't gotten from these other vendors.",
+  },
+  { speaker: 'note', level: 'partial', skill: 'Value articulation', text: 'The 3-month build-out is a concrete detail, but "mistakes don\'t happen" is an overpromise; describe what the build-out actually delivers and tie it to a measurable result.' },
+  { speaker: 'buyer', text: 'Yeah, every vendor' },
+]
+
+function LegendDot({ color, label }: { color: string; label: string }) {
+  return (
+    <span className="flex items-center gap-1.5 text-xs font-semibold text-ink-muted">
+      <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: color }} />
+      {label}
+    </span>
+  )
+}
+
+function ScoreTrack({
+  pct,
+  fillColor,
+  marker,
+}: {
+  pct: number
+  fillColor: string
+  marker?: { pct: number; label: string }
+}) {
+  return (
+    <div className="relative mt-6 h-2 rounded-full bg-sunken">
+      <div className="h-full rounded-full transition-all duration-700" style={{ width: `${pct}%`, backgroundColor: fillColor }} />
+      <span
+        className="absolute -top-7 -translate-x-1/2 whitespace-nowrap rounded-full border border-line bg-panel px-2 py-0.5 text-xs font-bold text-ink shadow-[var(--shadow-card)]"
+        style={{ left: `${pct}%` }}
+      >
+        {pct}%
+      </span>
+      {marker && (
+        <>
+          <span
+            className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-panel bg-success"
+            style={{ left: `${marker.pct}%` }}
+          />
+          <span
+            className="absolute -top-7 -translate-x-1/2 whitespace-nowrap rounded-full bg-success-soft px-2 py-0.5 text-[11px] font-semibold text-success"
+            style={{ left: `${marker.pct}%` }}
+          >
+            {marker.label}
+          </span>
+        </>
+      )}
+    </div>
+  )
+}
+
+function OutcomeReportCard() {
+  return (
+    <div className="mx-auto mt-8 max-w-2xl overflow-hidden rounded-2xl border border-line bg-panel shadow-[var(--shadow-overlay)]">
+      {/* Browser chrome, matching the "real interface" framing used
+          elsewhere on the site, so this reads as the actual product. */}
+      <div className="flex items-center gap-1.5 border-b border-line bg-sunken px-4 py-2.5">
+        <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+        <span className="ml-3 truncate rounded-md bg-panel px-2.5 py-1 text-[11px] font-medium text-ink-muted">
+          app.skillwell.com/reports/mvp-demo
+        </span>
+      </div>
+
+      <div className="p-6 sm:p-8">
+        <p className="text-xs font-semibold text-ink-muted">{OUTCOME_SCENARIO}</p>
+        <h3 className="mt-1 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">Outcome Report</h3>
+        <div className="mt-4 inline-flex items-center gap-2 rounded-xl bg-warning-soft px-3.5 py-2">
+          <span className="text-warning">
+            <MinusCircleIcon />
+          </span>
+          <div>
+            <p className="text-sm font-bold leading-none text-warning">Not Passed Yet</p>
+            <p className="mt-1 text-xs text-warning/80">Nov 11, 2026</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-t border-line px-6 py-6 sm:px-8">
+        <p className="text-[15px] leading-relaxed text-ink-soft">
+          You did not pass this attempt. There are a few areas where you can strengthen your skills. Please review the feedback below and try again.
+        </p>
+      </div>
+
+      <div className="mx-6 rounded-xl bg-sunken p-5 sm:mx-8 sm:p-6">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm font-bold text-ink">Skills Performance</p>
+          <div className="flex flex-wrap items-center gap-4">
+            <LegendDot color="var(--color-warning)" label="Not Passed" />
+            <LegendDot color="var(--color-success)" label="Passed" />
+            <LegendDot color="var(--color-primary)" label="Non Scored" />
+          </div>
+        </div>
+
+        <div className="mt-8 rounded-lg bg-panel p-5 shadow-[var(--shadow-card)]">
+          <ScoreTrack pct={OVERALL_SCORE} fillColor="var(--color-warning)" marker={{ pct: PASS_LEVEL, label: `Pass level ${PASS_LEVEL}%` }} />
+          <p className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-ink">
+            Overall Score
+            <span className="text-ink-muted">
+              <InfoIcon />
+            </span>
+          </p>
+        </div>
+
+        <div className="mt-9 flex flex-col gap-9">
+          {SKILL_BARS.map((s) => (
+            <div key={s.label}>
+              <ScoreTrack pct={s.pct} fillColor="var(--color-primary)" />
+              <p className="mt-3 text-sm font-semibold text-ink">{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="px-6 py-6 sm:px-8 sm:py-8">
+        <p className="text-sm font-bold text-ink">Coach feedback</p>
+        <ul className="mt-3 flex flex-col gap-3">
+          {COACH_FEEDBACK.map((f) => (
+            <li key={f} className="flex gap-2.5 text-sm leading-relaxed text-ink-soft">
+              <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-ink-muted" />
+              {f}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="border-t border-line px-6 py-6 sm:px-8 sm:py-8">
+        <p className="text-sm font-bold text-ink">Conversation Recap</p>
+        <div className="mt-5 flex flex-col gap-3">
+          {TRANSCRIPT.map((turn, i) => {
+            if (turn.speaker === 'note') {
+              const isPartial = turn.level === 'partial'
+              return (
+                <div
+                  key={i}
+                  className={`ml-6 rounded-lg border-l-4 py-2.5 pl-3.5 pr-3 sm:ml-10 ${isPartial ? 'border-warning bg-warning-soft' : 'border-danger bg-danger/10'}`}
+                >
+                  <p className={`flex items-center gap-1.5 text-xs font-bold ${isPartial ? 'text-warning' : 'text-danger'}`}>
+                    {isPartial ? <TriangleIcon /> : <XIcon />}
+                    {isPartial ? 'Partially Correct' : 'Incorrect'} · {turn.skill}
+                  </p>
+                  <p className="mt-1 text-[13px] leading-relaxed text-ink-soft">{turn.text}</p>
+                </div>
+              )
+            }
+            const isLearner = turn.speaker === 'learner'
+            return (
+              <div key={i} className={`flex flex-col ${isLearner ? 'items-end' : 'items-start'}`}>
+                <span className="mb-1 text-[11px] font-semibold text-ink-muted">{isLearner ? 'You' : 'Marcus Teel'}</span>
+                <div
+                  className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed sm:max-w-[70%] ${
+                    isLearner ? 'rounded-br-sm bg-navy text-white' : 'rounded-bl-sm bg-sunken text-ink'
+                  }`}
+                >
+                  {turn.text}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      <div className="border-t border-line px-6 py-4 text-center text-[11px] text-ink-muted sm:px-8">
+        © 2026 Skillwell. All rights reserved. Access is granted to authorized users only.
+      </div>
+    </div>
   )
 }
 
@@ -242,14 +481,6 @@ function Testimonial({ quote, name, title, logo }: { quote: string; name: string
 }
 
 export default function ConversationalSimsPage() {
-  useEffect(() => {
-    if (document.querySelector('script[src*="player.vimeo.com/api/player.js"]')) return
-    const script = document.createElement('script')
-    script.src = 'https://player.vimeo.com/api/player.js'
-    script.async = true
-    document.body.appendChild(script)
-  }, [])
-
   return (
     <div className="min-h-screen bg-surface text-ink">
       {/* Header */}
@@ -286,7 +517,7 @@ export default function ConversationalSimsPage() {
 
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
-              href="#demo"
+              href={DEMO_URL}
               className="flex w-full items-center justify-center gap-2 rounded-btn bg-primary px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-primary-hover sm:w-auto"
             >
               See it live <Arrow />
@@ -309,19 +540,10 @@ export default function ConversationalSimsPage() {
               One conversation. Every decision scored.
             </h2>
             <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">
-              Watch a learner talk through a high-stakes moment with an AI avatar while Skillwell tracks each decision point, maps it to a competency, and adapts what comes next.
+              Here's what a learner gets after a single conversational sim: a scored outcome report mapped to real competencies, coached line by line on what to say differently next time.
             </p>
           </div>
-          <div className="mx-auto mt-8 aspect-[4/3] max-w-3xl overflow-hidden rounded-2xl border border-line bg-navy-deep shadow-[var(--shadow-card)]">
-            <iframe
-              src="https://player.vimeo.com/video/1245203371?h=390e7f14cb&badge=0&autopause=0&player_id=0&app_id=58479"
-              className="h-full w-full"
-              frameBorder={0}
-              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              title="Conversational Sims"
-            />
-          </div>
+          <OutcomeReportCard />
         </div>
       </section>
 
@@ -386,13 +608,7 @@ export default function ConversationalSimsPage() {
           <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-3">
             {PLATFORM_PILLARS.map((p, i) => (
               <Reveal key={p.title} delay={i * 100} className="rounded-2xl border border-white/10 bg-white/5 p-5 text-left">
-                {'image' in p ? (
-                  <img src={p.image} alt="" className="h-28 w-full rounded-xl object-cover" />
-                ) : (
-                  <div className="grid h-28 w-full place-items-center rounded-xl" style={{ backgroundColor: 'rgba(255,255,255,0.08)', color: p.accent }}>
-                    <TagIcon />
-                  </div>
-                )}
+                <img src={p.image} alt="" className="h-28 w-full rounded-xl object-cover" />
                 <p className="mt-4 text-[11px] font-bold uppercase tracking-wide" style={{ color: p.accent }}>
                   {p.title}
                 </p>
@@ -411,7 +627,7 @@ export default function ConversationalSimsPage() {
 
           <div className="mt-8">
             <a
-              href={PLATFORM_URL}
+              href={DEMO_URL}
               className="inline-flex items-center justify-center gap-2 rounded-btn bg-white px-6 py-3 text-sm font-bold text-navy transition-colors hover:bg-white/90"
             >
               Explore the platform <Arrow />
