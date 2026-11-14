@@ -120,7 +120,7 @@ const PLATFORM_PILLARS = [
   {
     title: 'Skills Data',
     body: 'One shared framework every simulation, course, and report gets scored against.',
-    image: '/devlearn/capability-adaptive.jpg',
+    image: '/devlearn/skills-data.jpg',
     accent: 'var(--color-lime)',
   },
 ] as const
@@ -153,10 +153,11 @@ function TriangleIcon() {
 
 // ---- Outcome Report: a faithful recreation of the real product screen,
 // not a screenshot, so it's crisp at any size and themed with our own
-// tokens. Content (scores, feedback, transcript) is a real sample report
-// Austin supplied, trimmed for nothing — it's the proof this section exists
-// to show.
-const OUTCOME_SCENARIO = 'MVP Demo: Pricing negotiation with a skeptical executive'
+// tokens. Content (scores, feedback, transcript) comes from a real sample
+// report Austin supplied; coach feedback and the transcript are trimmed to
+// a representative excerpt (counts shown below each) so the card stays
+// scannable on a phone instead of running the full multi-screen report.
+const OUTCOME_SCENARIO = 'Pricing negotiation with a skeptical executive'
 const OVERALL_SCORE = 50
 const PASS_LEVEL = 70
 
@@ -169,11 +170,9 @@ const SKILL_BARS = [
 
 const COACH_FEEDBACK = [
   "Your value articulation stayed surface-level. Mentioning a senior account executive and a personalized build-out is a start, but you need to anchor those points to measurable outcomes (time saved, error rates, ROI) so the buyer can see the tangible difference from competitors.",
-  "You were interrupted and struggled to complete your thoughts, which allowed the conversation to drift away from your core message. Practice delivering your key value points in short, complete sentences so interruptions don't derail them.",
-  "When the objection about competitors offering the same thing at a lower price arose, you responded with process details rather than directly addressing the risk of repeating a painful past experience. Lead with the buyer's pain point before describing your solution.",
   "Your composure visibly wavered when you were cut off, resulting in fragmented responses. Build a habit of pausing briefly and restarting calmly with a clear, confident opener to signal that you're in control of the conversation.",
-  "There was no attempt to explore the buyer's priorities, budget flexibility, or decision criteria, which are essential levers in a negotiation. Ask targeted questions to understand what trade-offs the buyer is willing to consider before defending your price.",
 ]
+const COACH_FEEDBACK_MORE_COUNT = 3
 
 type Turn =
   | { speaker: 'buyer' | 'learner'; text: string }
@@ -186,28 +185,10 @@ const TRANSCRIPT: Turn[] = [
   },
   { speaker: 'learner', text: 'premium.' },
   { speaker: 'note', level: 'partial', skill: 'Composure', text: "Repeating the avatar's word back is a fair start, but follow it with a calm, complete answer rather than a fragment." },
-  { speaker: 'learner', text: 'Okay.' },
-  { speaker: 'buyer', text: 'Yeah, premium.' },
   { speaker: 'learner', text: "Yeah, you're getting" },
   { speaker: 'note', level: 'incorrect', skill: 'Value articulation', text: 'The sentence trails off before naming any concrete value, so state the specific benefit you deliver in one clear line.' },
-  { speaker: 'buyer', text: 'Hold' },
-  { speaker: 'learner', text: 'the' },
-  {
-    speaker: 'buyer',
-    text: 'If you\'re about to tell me "enterprise features," I\'ve heard that. What I need is simple: what\'s the measurable outcome you\'re confident we\'ll get, and how does your implementation avoid the kind of mess we had two years ago?',
-  },
-  {
-    speaker: 'learner',
-    text: "Yeah, you're going to be working with a senior account executive on your implementation. So I think the primary differentiator is going to be the",
-  },
-  { speaker: 'note', level: 'partial', skill: 'Objection handling', text: "You moved toward the implementation concern, but you didn't name the measurable outcome the buyer asked for; lead with that number or result first." },
-  {
-    speaker: 'learner',
-    text: "personalized build-out that you're going to get in those first 3 months of working with us to ensure that mistakes don't happen. You actually get the result that you haven't gotten from these other vendors.",
-  },
-  { speaker: 'note', level: 'partial', skill: 'Value articulation', text: 'The 3-month build-out is a concrete detail, but "mistakes don\'t happen" is an overpromise; describe what the build-out actually delivers and tie it to a measurable result.' },
-  { speaker: 'buyer', text: 'Yeah, every vendor' },
 ]
+const TRANSCRIPT_MORE_TURNS = 11
 
 function LegendDot({ color, label }: { color: string; label: string }) {
   return (
@@ -260,65 +241,71 @@ function OutcomeReportCard() {
       {/* Browser chrome, matching the "real interface" framing used
           elsewhere on the site, so this reads as the actual product. */}
       <div className="flex items-center gap-1.5 border-b border-line bg-sunken px-4 py-2.5">
-        <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
-        <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
-        <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+        <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-[#ff5f57]" />
+        <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-[#febc2e]" />
+        <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-[#28c840]" />
         <span className="ml-3 truncate rounded-md bg-panel px-2.5 py-1 text-[11px] font-medium text-ink-muted">
-          app.skillwell.com/reports/mvp-demo
+          app.skillwell.com/reports/example
         </span>
       </div>
 
-      <div className="p-6 sm:p-8">
-        <p className="text-xs font-semibold text-ink-muted">{OUTCOME_SCENARIO}</p>
+      <div className="p-5 sm:p-8">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <p className="text-xs font-semibold text-ink-muted">{OUTCOME_SCENARIO}</p>
+          <span className="rounded-full bg-sunken px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-ink-muted">
+            Example report
+          </span>
+        </div>
         <h3 className="mt-1 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">Outcome Report</h3>
         <div className="mt-4 inline-flex items-center gap-2 rounded-xl bg-warning-soft px-3.5 py-2">
           <span className="text-warning">
             <MinusCircleIcon />
           </span>
-          <div>
-            <p className="text-sm font-bold leading-none text-warning">Not Passed Yet</p>
-            <p className="mt-1 text-xs text-warning/80">Nov 11, 2026</p>
-          </div>
+          <p className="text-sm font-bold text-warning">Not Passed Yet</p>
         </div>
       </div>
 
-      <div className="border-t border-line px-6 py-6 sm:px-8">
+      <div className="border-t border-line px-5 py-5 sm:px-8 sm:py-6">
         <p className="text-[15px] leading-relaxed text-ink-soft">
           You did not pass this attempt. There are a few areas where you can strengthen your skills. Please review the feedback below and try again.
         </p>
       </div>
 
-      <div className="mx-6 rounded-xl bg-sunken p-5 sm:mx-8 sm:p-6">
+      <div className="mx-5 rounded-xl bg-sunken p-4 sm:mx-8 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm font-bold text-ink">Skills Performance</p>
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
             <LegendDot color="var(--color-warning)" label="Not Passed" />
             <LegendDot color="var(--color-success)" label="Passed" />
             <LegendDot color="var(--color-primary)" label="Non Scored" />
           </div>
         </div>
 
-        <div className="mt-8 rounded-lg bg-panel p-5 shadow-[var(--shadow-card)]">
-          <ScoreTrack pct={OVERALL_SCORE} fillColor="var(--color-warning)" marker={{ pct: PASS_LEVEL, label: `Pass level ${PASS_LEVEL}%` }} />
-          <p className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-ink">
-            Overall Score
-            <span className="text-ink-muted">
-              <InfoIcon />
-            </span>
-          </p>
-        </div>
+        {/* Side by side from sm up so the panel doesn't run so tall; a
+            single column on a phone, where there isn't width to spare. */}
+        <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-[1fr_1.3fr] sm:gap-8">
+          <div className="rounded-lg bg-panel p-5 shadow-[var(--shadow-card)]">
+            <ScoreTrack pct={OVERALL_SCORE} fillColor="var(--color-warning)" marker={{ pct: PASS_LEVEL, label: `Pass level ${PASS_LEVEL}%` }} />
+            <p className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-ink">
+              Overall Score
+              <span className="text-ink-muted">
+                <InfoIcon />
+              </span>
+            </p>
+          </div>
 
-        <div className="mt-9 flex flex-col gap-9">
-          {SKILL_BARS.map((s) => (
-            <div key={s.label}>
-              <ScoreTrack pct={s.pct} fillColor="var(--color-primary)" />
-              <p className="mt-3 text-sm font-semibold text-ink">{s.label}</p>
-            </div>
-          ))}
+          <div className="flex flex-col justify-center gap-6">
+            {SKILL_BARS.map((s) => (
+              <div key={s.label}>
+                <ScoreTrack pct={s.pct} fillColor="var(--color-primary)" />
+                <p className="mt-3 text-sm font-semibold text-ink">{s.label}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="px-6 py-6 sm:px-8 sm:py-8">
+      <div className="px-5 py-5 sm:px-8 sm:py-8">
         <p className="text-sm font-bold text-ink">Coach feedback</p>
         <ul className="mt-3 flex flex-col gap-3">
           {COACH_FEEDBACK.map((f) => (
@@ -328,9 +315,10 @@ function OutcomeReportCard() {
             </li>
           ))}
         </ul>
+        <p className="mt-3 text-xs text-ink-muted">+ {COACH_FEEDBACK_MORE_COUNT} more skill areas scored in the full report.</p>
       </div>
 
-      <div className="border-t border-line px-6 py-6 sm:px-8 sm:py-8">
+      <div className="border-t border-line px-5 py-5 sm:px-8 sm:py-8">
         <p className="text-sm font-bold text-ink">Conversation Recap</p>
         <div className="mt-5 flex flex-col gap-3">
           {TRANSCRIPT.map((turn, i) => {
@@ -339,7 +327,7 @@ function OutcomeReportCard() {
               return (
                 <div
                   key={i}
-                  className={`ml-6 rounded-lg border-l-4 py-2.5 pl-3.5 pr-3 sm:ml-10 ${isPartial ? 'border-warning bg-warning-soft' : 'border-danger bg-danger/10'}`}
+                  className={`ml-3 rounded-lg border-l-4 py-2.5 pl-3.5 pr-3 sm:ml-10 ${isPartial ? 'border-warning bg-warning-soft' : 'border-danger bg-danger/10'}`}
                 >
                   <p className={`flex items-center gap-1.5 text-xs font-bold ${isPartial ? 'text-warning' : 'text-danger'}`}>
                     {isPartial ? <TriangleIcon /> : <XIcon />}
@@ -354,7 +342,7 @@ function OutcomeReportCard() {
               <div key={i} className={`flex flex-col ${isLearner ? 'items-end' : 'items-start'}`}>
                 <span className="mb-1 text-[11px] font-semibold text-ink-muted">{isLearner ? 'You' : 'Marcus Teel'}</span>
                 <div
-                  className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed sm:max-w-[70%] ${
+                  className={`max-w-[88%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed sm:max-w-[70%] ${
                     isLearner ? 'rounded-br-sm bg-navy text-white' : 'rounded-bl-sm bg-sunken text-ink'
                   }`}
                 >
@@ -363,10 +351,11 @@ function OutcomeReportCard() {
               </div>
             )
           })}
+          <p className="mt-1 text-center text-xs text-ink-muted">+ {TRANSCRIPT_MORE_TURNS} more turns, scored the same way.</p>
         </div>
       </div>
 
-      <div className="border-t border-line px-6 py-4 text-center text-[11px] text-ink-muted sm:px-8">
+      <div className="border-t border-line px-5 py-4 text-center text-[11px] text-ink-muted sm:px-8">
         © 2026 Skillwell. All rights reserved. Access is granted to authorized users only.
       </div>
     </div>
@@ -540,7 +529,7 @@ export default function ConversationalSimsPage() {
               One conversation. Every decision scored.
             </h2>
             <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">
-              Here's what a learner gets after a single conversational sim: a scored outcome report mapped to real competencies, coached line by line on what to say differently next time.
+              This is an example of the outcome report a learner gets after a single conversational sim: scored against real competencies, coached line by line on what to say differently next time.
             </p>
           </div>
           <OutcomeReportCard />
