@@ -187,6 +187,9 @@ section{padding:96px 0}
 .loop-card h3{font-family:var(--font-display);font-size:21px;color:var(--c-paper)}
 .loop-card p{color:var(--c-mist-soft);font-size:15px}
 .loop-back{display:flex;align-items:center;gap:10px;margin-top:40px;color:var(--c-mist-soft);font-family:var(--font-body);font-size:14.5px}
+.why-us{margin-top:56px;padding-top:40px;border-top:1px solid rgba(239,232,215,.18);max-width:760px}
+.why-us h3{color:var(--c-paper);font-size:clamp(20px,2.2vw,26px);line-height:1.25}
+.why-us p{color:var(--c-mist-soft);font-size:15.5px;line-height:1.6;margin-top:12px}
 .video-cta{display:inline-flex;align-items:center;gap:12px;margin-top:22px;text-decoration:none;color:var(--c-sand)}
 .video-cta .vc-play{width:40px;height:40px;border-radius:50%;background:var(--c-sand);display:flex;align-items:center;justify-content:center;flex:none;transition:transform .25s ease}
 .video-cta:hover .vc-play{transform:scale(1.08)}
@@ -427,6 +430,24 @@ footer.site{background:var(--c-ink);color:var(--c-mist-soft);padding:28px 0}
 .price-card.featured .btn-ghost:hover,.price-card.dark .btn-ghost:hover{background:var(--c-sand)}
 .pricing-note{max-width:640px;margin:16px auto 0;text-align:center;font-size:14px;color:var(--c-mist)}
 @media (max-width:900px){.pricing-grid{grid-template-columns:1fr;max-width:480px}.price-card.featured{margin-top:0;margin-bottom:0;padding-top:32px;padding-bottom:32px}}
+
+.custom-panel{display:flex;justify-content:center;padding-bottom:40px}
+.custom-card{max-width:560px;width:100%;background:var(--c-paper);border:1.5px solid var(--c-mist-soft);border-radius:20px;padding:44px 40px;text-align:center;box-shadow:0 20px 40px -32px rgba(14,72,84,.35)}
+.custom-card h2{font-size:clamp(24px,2.8vw,30px)}
+.custom-card p{color:var(--c-ink-80);font-size:15px;margin-top:12px}
+.custom-list{text-align:left;margin:28px 0;gap:14px!important}
+.custom-card .btn{display:inline-flex;margin-top:4px}
+
+.sw-modal-overlay{position:fixed;inset:0;z-index:9999;background:rgba(14,72,84,.55);display:none;align-items:center;justify-content:center;padding:20px}
+.sw-modal-box{position:relative;background:var(--c-paper);border-radius:18px;padding:36px 32px;max-width:420px;width:100%;box-shadow:0 30px 60px -20px rgba(0,0,0,.5)}
+.sw-modal-box h3{font-size:21px}
+.sw-modal-box p{color:var(--c-ink-80);font-size:14px;margin-top:8px}
+.sw-modal-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;line-height:1;color:var(--c-mist);cursor:pointer}
+.sw-modal-box form{display:flex;flex-direction:column;gap:14px;margin-top:20px}
+.sw-modal-box label{display:flex;flex-direction:column;gap:6px;font-size:13.5px;font-weight:600;color:var(--c-ink-80)}
+.sw-modal-box input,.sw-modal-box textarea{font:inherit;font-weight:400;padding:10px 12px;border:1.5px solid var(--c-mist-soft);border-radius:8px;color:var(--c-ink);resize:vertical}
+.sw-modal-box .btn{width:100%;justify-content:center;margin-top:4px}
+.sw-intake-alt{display:block;text-align:center;margin-top:16px;font-size:13.5px;color:var(--c-mist);text-decoration:underline}
 
 /* TEAM / WHO WE ARE */
 #team-page{padding:84px 0 90px}
@@ -700,6 +721,10 @@ footer.site{background:var(--c-ink);color:var(--c-mist-soft);padding:28px 0}
     <div class="loop-back">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 1 1 3 6.7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M3 17v-5h5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Every verified gap becomes the next assessment.
+    </div>
+    <div class="why-us">
+      <h3>AI can explain a skill. It can't make you own it.</h3>
+      <p>Most roles still need people who actually know something, not just someone who can ask an assistant in the moment. Most one-off training doesn't stick, and generic AI coaching doesn't fix that on its own. Skillwell is built around rehearsal and verification, not modules, so the skill transfers to the job and stays there.</p>
     </div>
   </div>
 </section>
@@ -982,59 +1007,142 @@ footer.site{background:var(--c-ink);color:var(--c-mist-soft);padding:28px 0}
     </div>
 
     <div class="term-wrap">
-      <div class="term-toggle" role="group" aria-label="Contract term">
-        <button type="button" class="term-opt is-active" data-term="1" onclick="setTerm(1,this)">1-year term</button>
-        <button type="button" class="term-opt" data-term="3" onclick="setTerm(3,this)">3-year term</button>
+      <div class="term-toggle" role="group" aria-label="Pricing for">
+        <button type="button" class="term-opt is-active" data-vertical="highered" onclick="setVertical('highered',this)">Higher ed</button>
+        <button type="button" class="term-opt" data-vertical="corporate" onclick="setVertical('corporate',this)">Corporate</button>
+        <button type="button" class="term-opt" data-vertical="custom" onclick="setVertical('custom',this)">Custom</button>
       </div>
-      <p class="term-note">Committing to a 3-year term lowers your effective rate per learner.</p>
+      <p class="term-note">Same platform, packaged the way higher ed and corporate teams actually buy.</p>
     </div>
 
-    <div class="pricing-grid">
+    <div id="pg-highered" class="pricing-grid">
 
       <div class="price-card tint">
         <div class="price-card-head"><span class="price-card-name">Starter</span></div>
-        <div class="price-amount"><span class="price-main" data-p1="Starting at $20" data-p3="Starting at $17">Starting at $20</span><sub>/learner/yr</sub></div>
+        <div class="price-amount"><span class="price-main">$50</span><sub>/learner/course</sub></div>
         <p class="price-sub">For a single course or topic.</p>
         <div class="price-feat-label">Includes</div>
         <ul class="price-features">
-          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Up to 2,000 learners or students</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>AutoBuild-generated simulations included</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Conversational sim minutes included</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Standard support</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>All out-of-the-box skill features included</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>No limit on total learners</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Minimum of 30 learners to start</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>LMS and SSO integration</li>
         </ul>
-        <a href="https://tryskillwell.com" target="_blank" rel="noopener" class="btn btn-ghost">Get started</a>
+        <a href="javascript:void(0)" onclick="openIntake(event)" class="btn btn-ghost">Get your quote</a>
       </div>
 
       <div class="price-card featured">
         <div class="price-card-head"><span class="price-card-name">Growth</span><span class="price-badge">Most popular</span></div>
-        <div class="price-amount"><span class="price-main" data-p1="Starting at $12" data-p3="Starting at $10">Starting at $12</span><sub>/learner/yr</sub></div>
+        <div class="price-amount"><span class="price-main">Starting at $22</span><sub>/learner/yr</sub></div>
         <p class="price-sub">For scaling training across multiple learner groups.</p>
         <div class="price-feat-label">Everything in Starter, plus</div>
         <ul class="price-features">
-          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Up to 10,000 learners or students</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>More AutoBuild simulations included</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>A few bespoke simulations included</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Priority support and onboarding</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Unlimited courses for each unique learner</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Up to 10,000 learners</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Up to 40 courses in your catalog</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>10 hours of course-building services included</li>
         </ul>
         <a href="javascript:void(0)" onclick="swGoto('demo',event)" class="btn btn-ghost">Book a demo</a>
       </div>
 
       <div class="price-card dark">
         <div class="price-card-head"><span class="price-card-name">Enterprise</span></div>
-        <div class="price-amount"><span class="price-main" data-p1="Custom" data-p3="Custom">Custom</span></div>
+        <div class="price-amount"><span class="price-main">Custom</span></div>
         <p class="price-sub">For running programs across a whole organization or campus.</p>
         <div class="price-feat-label">Everything in Growth, plus</div>
         <ul class="price-features">
-          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Unlimited learners or students</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Fully bespoke simulations built with our team</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>SSO, security review, and compliance support</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Dedicated CSM, training included</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Up to unlimited learners and courses</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Full migration of all learning content</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Dedicated instructional designer</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Custom data reporting and skills-taxonomy mapping</li>
         </ul>
         <a href="javascript:void(0)" onclick="swGoto('demo',event)" class="btn btn-ghost">Talk to sales</a>
       </div>
 
     </div>
 
+    <div id="pg-corporate" class="pricing-grid" style="display:none">
+
+      <div class="price-card tint">
+        <div class="price-card-head"><span class="price-card-name">Starter</span></div>
+        <div class="price-amount"><span class="price-main">$50</span><sub>/learner/course</sub></div>
+        <p class="price-sub">For a single training initiative.</p>
+        <div class="price-feat-label">Includes</div>
+        <ul class="price-features">
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>All out-of-the-box skill features included</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Up to 2,000 learners</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Minimum of 30 learners to start</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>LMS and SSO integration</li>
+        </ul>
+        <a href="javascript:void(0)" onclick="openIntake(event)" class="btn btn-ghost">Get your quote</a>
+      </div>
+
+      <div class="price-card featured">
+        <div class="price-card-head"><span class="price-card-name">Growth</span><span class="price-badge">Most popular</span></div>
+        <div class="price-amount"><span class="price-main">Starting at $22</span><sub>/learner/yr</sub></div>
+        <p class="price-sub">For scaling training across multiple learner groups.</p>
+        <div class="price-feat-label">Everything in Starter, plus</div>
+        <ul class="price-features">
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Up to 8,000 learners</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>5,000 conversational simulation minutes included</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>20 hours of services support included</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>LMS and SSO integration</li>
+        </ul>
+        <a href="javascript:void(0)" onclick="swGoto('demo',event)" class="btn btn-ghost">Book a demo</a>
+      </div>
+
+      <div class="price-card dark">
+        <div class="price-card-head"><span class="price-card-name">Enterprise</span></div>
+        <div class="price-amount"><span class="price-main">Custom</span></div>
+        <p class="price-sub">For running programs across a whole organization or campus.</p>
+        <div class="price-feat-label">Everything in Growth, plus</div>
+        <ul class="price-features">
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Up to unlimited learners and simulations</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Full migration of all learning content</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Dedicated instructional designer</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Custom data reporting and analytics</li>
+        </ul>
+        <a href="javascript:void(0)" onclick="swGoto('demo',event)" class="btn btn-ghost">Talk to sales</a>
+      </div>
+
+    </div>
+
+    <div id="pg-custom" class="custom-panel" style="display:none">
+      <div class="custom-card">
+        <h2>Need something that doesn't fit a package?</h2>
+        <p>Talk to sales about a custom package built from any combination of the following.</p>
+        <ul class="price-features custom-list">
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Content migration from your existing LMS or authoring tool</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Instructional design consulting</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Live simulation builds</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Conversational sim deployment only</li>
+        </ul>
+        <a href="javascript:void(0)" onclick="swGoto('demo',event)" class="btn btn-primary">Talk to sales</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="swIntakeModal" class="sw-modal-overlay" style="display:none">
+  <div class="sw-modal-box">
+    <button type="button" class="sw-modal-close" onclick="closeIntake()" aria-label="Close">&times;</button>
+    <div id="swIntakeForm">
+      <h3>Tell us about your program</h3>
+      <p>We'll turn this into a formal quote and a time with an implementation specialist.</p>
+      <form onsubmit="submitIntake(event)">
+        <label>Number of courses<input type="number" min="1" required></label>
+        <label>Number of learners<input type="number" min="30" required></label>
+        <label>Desired implementation date<input type="date"></label>
+        <label>Anything else we should know?<textarea rows="3"></textarea></label>
+        <button type="submit" class="btn btn-primary">Request my quote</button>
+      </form>
+      <a href="javascript:void(0)" class="sw-intake-alt" onclick="closeIntake();swGoto('demo',event)">Not ready to buy? Set up a demo instead.</a>
+    </div>
+    <div id="swIntakeThanks" style="display:none">
+      <h3>Got it.</h3>
+      <p>We'll follow up shortly with a formal quote and a time to meet with an implementation specialist.</p>
+    </div>
   </div>
 </div>
 
@@ -1201,12 +1309,28 @@ function swGoto(viewId, event){
 if(location.hash === '#pricing'){ swGoto('pricing'); }
 if(location.hash === '#team'){ swGoto('team'); }
 
-function setTerm(term, btn){
+function setVertical(vertical, btn){
   document.querySelectorAll('.term-opt').forEach(function(b){ b.classList.remove('is-active'); });
   btn.classList.add('is-active');
-  document.querySelectorAll('.price-main').forEach(function(el){
-    el.textContent = el.getAttribute(term === 3 ? 'data-p3' : 'data-p1');
+  ['highered','corporate','custom'].forEach(function(k){
+    var el = document.getElementById('pg-' + k);
+    if(!el) return;
+    el.style.display = (k === vertical) ? (k === 'custom' ? 'block' : 'grid') : 'none';
   });
+}
+function openIntake(event){
+  if(event) event.preventDefault();
+  document.getElementById('swIntakeForm').style.display = 'block';
+  document.getElementById('swIntakeThanks').style.display = 'none';
+  document.getElementById('swIntakeModal').style.display = 'flex';
+}
+function closeIntake(){
+  document.getElementById('swIntakeModal').style.display = 'none';
+}
+function submitIntake(event){
+  event.preventDefault();
+  document.getElementById('swIntakeForm').style.display = 'none';
+  document.getElementById('swIntakeThanks').style.display = 'block';
 }
 
 // shared avatar-video placeholder (one base64 payload, reused across every use-case card rather than repeated inline)
