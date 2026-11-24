@@ -26,7 +26,12 @@ export default defineConfig({
         he: resolve(root, 'he/index.html'),
         cbe: resolve(root, 'cbe/index.html'),
         devlearn: resolve(root, 'devlearn/index.html'),
-        conversationalSims: resolve(root, 'conversational-sims/index.html'),
+        // PULLED 2026-11-24: /conversational-sims taken offline pending rights
+        // clearance on the embedded sim (embed.liveavatar.com, see
+        // ConversationalSimsPage.tsx) and the new embed code from product. All
+        // source files are kept intact — uncomment this line and redeploy to
+        // bring the page back (swap in the new embed first).
+        // conversationalSims: resolve(root, 'conversational-sims/index.html'),
         learningPortfolioBeta: resolve(root, 'learning-portfolio-beta/index.html'),
       },
     },
